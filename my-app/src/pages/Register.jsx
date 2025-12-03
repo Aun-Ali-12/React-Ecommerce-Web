@@ -18,7 +18,8 @@ function CreateAcc() {
     const specialChar = /[!@#$%^&*]/
 
     // register user on click button (Register)
-    const RegisterUser = () => {
+    const RegisterUser = (e) => {
+        e.preventDefault();
         signUp()
     }
 
@@ -46,7 +47,7 @@ function CreateAcc() {
         //formatting the name
         const splitName = name.split(" ")
         const formatName = (splitName.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())).join(" ")
-        
+
         try {
             setLoading(true)
             const { error } = await supabase.auth.signUp({
@@ -77,15 +78,14 @@ function CreateAcc() {
     }
     return (
         <>
-            <div>Hello signup</div>
             <div id="reg-container">
                 <h1>Register yourself</h1>
-                <div id="form">
+                <form id="form" onSubmit={RegisterUser}>
                     Enter your name: <input type="text" value={name} onChange={(e) => { setName(e.target.value) }} placeholder="enter your name" disabled={loading} /><br />
                     Enter your email: <input type="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="enter your email" disabled={loading} /><br />
-                    Enter your password: <input type="password" value={pass} onChange={(e) => { setPass(e.target.value) }} placeholder="enter your password" disabled={loading} /><br />
-                </div>
-                <button onClick={RegisterUser} disabled={loading}>{loading ? "Registering..." : "Register"}</button>
+                    Enter your password: <input type="password" value={pass} onChange={(e) => { setPass(e.target.value)}} placeholder="enter your password" disabled={loading} /><br />
+                <button type="submit" disabled={loading}>{loading ? "Registering..." : "Register"}</button>
+                </form>
                 <p>already registered? <Link to="/">login</Link></p>
             </div>
         </>

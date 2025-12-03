@@ -14,8 +14,9 @@ function Login() {
     const navigate = useNavigate()
 
     // register user on click button (Register)
-    const LoginAcc = () => {
-        LoginUser()
+    const LoginAcc = (e) => {
+        e.preventDefault();
+        LoginUser();
     }
 
     //function to perform signup 
@@ -47,6 +48,7 @@ function Login() {
             setName("")
             setEmail("")
             setPass("")
+            navigate("/home")
         }
         catch (err) {
             console.log("error in LoginUser function");
@@ -57,12 +59,12 @@ function Login() {
         <>
             <div id="reg-container">
                 <h1>Login to your account</h1>
-                <div id="form">
+                <form onSubmit={LoginAcc} id="form">
                     Enter your email: <input type="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="enter your email" disabled={loading} /><br />
                     Enter your password: <input type="password" value={pass} onChange={(e) => { setPass(e.target.value) }} placeholder="enter your password" disabled={loading} /><br />
-                </div>
-                <button onClick={LoginAcc} disabled={loading}>{loading ? "Registering..." : "Register"}</button>
-                <p>already registered? <Link to="/">login</Link></p>
+                    <button disabled={loading}>{loading ? "Logging in..." : "Log in"}</button>
+                </form>
+                <p>already registered? <Link to="/signup">Signup</Link></p>
             </div>
         </>
     )
