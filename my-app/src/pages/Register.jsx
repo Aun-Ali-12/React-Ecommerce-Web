@@ -75,6 +75,29 @@ function CreateAcc() {
             console.log("error in signup function");
         }
 
+        //manuallay inserting new user in to user table
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+            console.log(user);
+        }
+        const userName = user.user_metadata.user_name
+        const userEmail = user.user_metadata.email
+        const userId = user.id
+
+        try {
+            const { error } = await supabase
+                .from('users')
+                .insert({ id: userId, user_name: userName, user_email: userEmail, is_admin: false })
+
+            if (error) {
+                console.log(error.message);
+                return
+            }
+            console.log("user inserted manually after signing up");
+        }
+        catch (err) {
+            console.log(err, "error while inserting user manuallay after signing up");
+        }
     }
     return (
         <>
@@ -83,8 +106,8 @@ function CreateAcc() {
                 <form id="form" onSubmit={RegisterUser}>
                     Enter your name: <input type="text" value={name} onChange={(e) => { setName(e.target.value) }} placeholder="enter your name" disabled={loading} /><br />
                     Enter your email: <input type="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="enter your email" disabled={loading} /><br />
-                    Enter your password: <input type="password" value={pass} onChange={(e) => { setPass(e.target.value)}} placeholder="enter your password" disabled={loading} /><br />
-                <button type="submit" disabled={loading}>{loading ? "Registering..." : "Register"}</button>
+                    Enter your password: <input type="password" value={pass} onChange={(e) => { setPass(e.target.value) }} placeholder="enter your password" disabled={loading} /><br />
+                    <button type="submit" disabled={loading}>{loading ? "Registering..." : "Register"}</button>
                 </form>
                 <p>already registered? <Link to="/">login</Link></p>
             </div>
