@@ -6,8 +6,8 @@ import Product from './pages/Product';
 import Cart from './pages/Cart';
 import Login from './pages/Login'
 import CreateAcc from './pages/Register'
+import Admin from './pages/Admin'
 import Navbar from './components/navbar/Navbar';
-
 function App() {
   console.log(supabase);
   const location = useLocation()  
@@ -23,6 +23,7 @@ function App() {
         <Route path='/home' element={<Home />} />
         <Route path='/products' element={<Product />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/admin' element={<Admin />} />
       </Routes>
     </>
   )

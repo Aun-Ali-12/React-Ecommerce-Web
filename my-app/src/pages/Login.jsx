@@ -28,27 +28,40 @@ function Login() {
             return
         }
 
-        //formatting the name
-        const splitName = name.split(" ")
-        const formatName = (splitName.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())).join(" ")
-
         try {
             setLoading(true)
             const { error } = await supabase.auth.signInWithPassword({
                 email: email.trim(),
                 password: pass.trim(),
             })
-
             if (error) {
-                alert(error)
                 setLoading(false)
+                alert(error)
                 return
             }
-            alert("Logged in successfull.")
+            try {
+                const { data: { user } } = await supabase.auth.getUser()
+                let userId = user.id
+                const { data } = await supabase
+                    .from("users")
+                    .select("*")
+                    .eq("id", userId)
+                alert("Logged in successfull.")
+                if (data) {
+                    console.log(data);
+                    navigate("/admin")
+                } else {
+                    console.log(data);
+                    navigate("/home")
+                    setLoading(false)
+                }
+            }
+            catch (err) {
+                console.log("Error in admin false");
+            }
             setName("")
             setEmail("")
             setPass("")
-            navigate("/home")
         }
         catch (err) {
             console.log("error in LoginUser function");
