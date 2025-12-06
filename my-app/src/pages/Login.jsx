@@ -47,7 +47,11 @@ function Login() {
                     .select("*")
                     .eq("id", userId)
                 alert("Logged in successfull.")
-                if (data) {
+
+                const adminState = data[0].is_admin
+                console.log(adminState);
+
+                if (adminState) {
                     console.log(data);
                     navigate("/admin")
                 } else {
@@ -62,6 +66,7 @@ function Login() {
             setName("")
             setEmail("")
             setPass("")
+            setLoading(false)
         }
         catch (err) {
             console.log("error in LoginUser function");
