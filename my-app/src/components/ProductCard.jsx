@@ -2,7 +2,7 @@ import { useProducts } from "../Context/ProductData"
 
 function ProductCard() {
     const { productsData } = useProducts();
-    console.log(productsData );
+    // console.log(productsData );
 
     return (
         <>
