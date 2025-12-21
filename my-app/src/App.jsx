@@ -8,7 +8,7 @@ import Login from './pages/Login'
 import CreateAcc from './pages/Register'
 import Admin from './pages/Admin/Admin'
 import Dashboard from './components/admin/Dashboard'
-import Analytics from './components/admin/Analytics'
+import ListedProduct from './components/admin/ListedProduct'
 import Listing from './components/admin/Listing'
 import Navbar from './components/navbar/Navbar';
 function App() {
@@ -16,7 +16,7 @@ function App() {
   const location = useLocation()
   return (
     <>
-      {location.pathname !== '/' && location.pathname !== '/signup' && location.pathname !== '/admin' && location.pathname !== '/admin/listing' && location.pathname !== '/admin/analytics' && location.pathname !== '/admin/dashboard' && (
+      {location.pathname !== '/' && location.pathname !== '/signup' && location.pathname !== '/admin' && location.pathname !== '/admin/listing' && location.pathname !== '/admin/yourproduct' && location.pathname !== '/admin/dashboard' && (
         <div>
           <Navbar />
         </div>)}
@@ -29,7 +29,7 @@ function App() {
         {/* Nested Routes for Admin Dashboard  */}
         <Route path='/admin/*' element={<Admin />}>
           <Route path='dashboard' element={<Dashboard />} />
-          <Route path='analytics' element={<Analytics />} />
+          <Route path='yourproduct' element={<ListedProduct />} />
           <Route path='listing' element={<Listing />} />
         </Route>
       </Routes>

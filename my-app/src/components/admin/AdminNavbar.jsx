@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 function AdminNavbar() {
     const navElements = [
         { path: '/admin/listing', label: 'Product Listing' },
-        { path: '/admin/analytics', label: 'Analytics' },
+        { path: '/admin/yourproduct', label: 'Your Products' },
         { path: '/admin/dashboard', label: 'Dashboard' }
     ]
 

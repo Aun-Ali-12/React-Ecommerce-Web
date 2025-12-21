@@ -8,15 +8,12 @@ function ClothApi() {
     useEffect(() => {
         async function fetchApi() {
             const response = await fetch('https://fakestoreapi.com/products/')
-            // console.log(response);
             const products = await response.json()
-            // console.log(products);
             setApiData(products)
-            console.log(apiData);
+            console.log(apiData, "api data");
         }
         fetchApi()
         insertApiData()
-        fetchProduct()
     }, [])
 
     async function insertApiData() {
@@ -33,7 +30,7 @@ function ClothApi() {
             title: value.title,
             description: value.description,
             price: value.price,
-            image: value.image,
+            image: [value.image],
             category: value.category,
             created_by: "fakeApi"
         }))
@@ -54,14 +51,7 @@ function ClothApi() {
         catch (err) {
             console.log("error while inserting api");
             console.log(err);
-
         }
     }
-
-    //runs when apiData changes
-    useEffect(() => {
-        console.log(apiData);
-        console.log(products, "pro");
-    }, [apiData])
 }
 export default ClothApi

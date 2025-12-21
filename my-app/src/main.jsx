@@ -7,10 +7,10 @@ import { ProductProvider } from './Context/ProductData.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-      <BrowserRouter>
+    <BrowserRouter>
       <ProductProvider>
-      <App />
+        <App />
       </ProductProvider>
-      </BrowserRouter>
+    </BrowserRouter>
   </React.StrictMode>
 )

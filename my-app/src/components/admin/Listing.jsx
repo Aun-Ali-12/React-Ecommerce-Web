@@ -11,7 +11,7 @@ function Listing() {
         price: "",
         category: ''
     })
-    const [productId, setProductId] = useState("") //product id
+    const [productId, setProductId] = useState() //product id
 
 
     //input through which we get file object
@@ -44,7 +44,7 @@ function Listing() {
         //getting user session (to check is it admin)
         const { data: { user } } = await supabase.auth.getUser()
         let admin = user.id //user id
-
+        let insertedProductId;
         // if (!productDetails.title || !productDetails.description || !productDetails.price || !productDetails.category) {
         //     alert("enter all fields")
         //     return
@@ -66,6 +66,8 @@ function Listing() {
                 console.log("product not inserted", error.message);
                 return
             }
+            console.log(data.id);
+            insertedProductId = data.id
             setProductId(data.id)
 
         }
@@ -80,7 +82,7 @@ function Listing() {
                 const safeFileName = file.name
                     .replace(/\s+/g, "_")       // spaces -> _
                     .replace(/[^\w.-]/g, "");  // remove special chars except . and -
-                let filePath = `${productId}/${crypto.randomUUID()}-${safeFileName}`
+                let filePath = `${insertedProductId}/${crypto.randomUUID()}-${safeFileName}`
 
                 const { data: uploadFile, error } = await supabase
                     .storage
@@ -108,19 +110,18 @@ function Listing() {
                 }
                 catch (err) {
                     console.log("error in creating url", err);
-
                 }
             }
             //inserting url in product table:
             const { data, error } = await supabase
                 .from('product_table')
-                .update({image: url})
-                .eq('id', productId)
+                .update({ image: url })
+                .eq('id', insertedProductId)
             if (error) {
                 console.log("error while updating", error.message);
                 return
             }
-            console.log(data);
+            console.log(insertedProductId);
         }
         catch (err) {
             console.log("error in uploading file", err);
@@ -128,11 +129,6 @@ function Listing() {
         console.log(url);
     }
 
-
-    useEffect(() => {
-        console.log(productImg);
-        console.log(productDetails);
-    }, [productDetails])
     return (
         <>
             <h1>Product Listing</h1>
