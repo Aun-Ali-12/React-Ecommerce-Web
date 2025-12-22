@@ -14,6 +14,7 @@ export const ProductProvider = ({ children }) => {
             const { data, error } = await supabase
                 .from('product_table')
                 .select('*')
+                .order('created_at', { ascending: false })
             if (error) {
                 console.log(error.message);
                 return

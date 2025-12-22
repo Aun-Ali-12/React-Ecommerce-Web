@@ -94,19 +94,25 @@ function Listing() {
                     console.log(uploadFile);
                 }
 
-                //creating signed url
+                //creating public url
                 try {
-                    const { data, error } = await supabase
+                    // const { data, error } = await supabase
+                    //     .storage
+                    //     .from('product_image')
+                    //     .createSignedUrl(filePath, 60 * 60)
+
+                    // if (error) {
+                    //     console.log(error.message);
+                    //     return
+                    // }
+                    // console.log(data.signedUrl);
+                    // url.push(data.signedUrl)
+                    // Sirf ye change karo code mein
+                    const { data } = supabase
                         .storage
                         .from('product_image')
-                        .createSignedUrl(filePath, 60 * 60)
-
-                    if (error) {
-                        console.log(error.message);
-                        return
-                    }
-                    console.log(data.signedUrl);
-                    url.push(data.signedUrl)
+                        .getPublicUrl(filePath)
+                    url.push(data.publicUrl)
                 }
                 catch (err) {
                     console.log("error in creating url", err);
