@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react"
 import { supabase } from "../../services/supabaseClient"
+import { useEditContext } from "../../Context/EditListing"
 
 function Listing() {
 
+    const { editData, setEditData, isEditMode, resetEdit } = useEditContext() //importing from edit context
     const [flag, setFlag] = useState(false) //handles rendering of listing feature
     const [productImg, setProductImg] = useState([]) //use state which handles file(product_img) input
-    const [productDetails, setProductDetails] = useState({
+    const [productDetails, setProductDetails] = useState(editData || {
         title: '',
         description: '',
         price: "",
         category: ''
     })
     const [productId, setProductId] = useState() //product id
-
 
     //input through which we get file object
     const handleImg = (e) => {
@@ -39,8 +40,7 @@ function Listing() {
     }
 
     //on button(add product) click
-    const onAdd = async () => {
-
+    const onAdd = async (index) => {
         //getting user session (to check is it admin)
         const { data: { user } } = await supabase.auth.getUser()
         let admin = user.id //user id
@@ -135,9 +135,40 @@ function Listing() {
         console.log(url);
     }
 
+    const deletePictureFromStorage = async (index) => {
+        const imageUrl = editData.image.map(file => file.split('/product_image/')[1])
+        try {
+            const { data, error } = await supabase
+                .storage
+                .from('product_image')
+                .remove([imageUrl])
+
+            if (error) {
+                console.log(error);
+                return
+            }
+            console.log("image deleted in storage");
+
+            //update state
+            const updateImgs = editData.image.map((url) => url !== index)
+            setEditData({ ...editData, image: updateImgs })
+
+            // DB update
+            await supabase
+                .from('product_table')
+                .update({ image: updateImgs })
+                .eq('id', editData.id)
+
+            console.log("Image deleted successfully")
+        }
+        catch (err) {
+            console.log("error while storing edit images");
+        }
+    }
+
     return (
         <>
-            <h1>Product Listing</h1>
+            <h1 className="font-bold text-2xl">List product now</h1>
             <div><button onClick={() => { setFlag(!flag) }}>{!flag ? "Add" : "cross"}</button></div>
             {flag && (
                 <div>
@@ -145,6 +176,22 @@ function Listing() {
                     <div>enter product description<input type="text" name="description" onChange={handleChange} className="border border-gray-500" /></div>
                     <div>enter product price<input type="number" name="price" onChange={handleChange} className="border border-gray-500" /></div>
                     <div>enter product image <input type="file" multiple accept="image/*" className="border border-gray-500" onChange={handleImg} /> </div>
+                    {
+                        isEditMode && editData?.image?.length > 0 && (
+                            <div>
+                                <h1>Existing Image</h1>
+                                {
+                                    editData.image.map((img, index) => (
+                                        <div key={index}>
+                                            <img src={img} width="200px" alt="" />
+                                            <button onClick={() => { deletePictureFromStorage(index) }}>Remove</button>
+                                        </div>
+                                    ))
+
+                                }
+                            </div>
+                        )
+                    }
                     <div>{
                         productImg.map((file, index) => (
                             <div key={index}>
