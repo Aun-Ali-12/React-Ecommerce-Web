@@ -40,7 +40,7 @@ function Listing() {
     }
 
     //on button(add product) click
-    const onAdd = async (index) => {
+    const onAdd = async () => {
         //getting user session (to check is it admin)
         const { data: { user } } = await supabase.auth.getUser()
         let admin = user.id //user id
@@ -50,98 +50,145 @@ function Listing() {
         //     return
         // }
         //inserting product details in product table
-        try {
-            const { data, error } = await supabase
-                .from('product_table')
-                .insert({
-                    title: productDetails.title,
-                    description: productDetails.description,
-                    price: productDetails.price,
-                    category: productDetails.category,
-                    created_by: admin,
-                })
-                .select()
-                .single()
-            if (error) {
-                console.log("product not inserted", error.message);
-                return
+        if (!isEditMode) {
+            try {
+                const { data, error } = await supabase
+                    .from('product_table')
+                    .insert({
+                        title: productDetails.title,
+                        description: productDetails.description,
+                        price: productDetails.price,
+                        category: productDetails.category,
+                        created_by: admin,
+                    })
+                    .select()
+                    .single()
+                if (error) {
+                    console.log("product not inserted", error.message);
+                    return
+                }
+                console.log(data.id);
+                insertedProductId = data.id
+                setProductId(data.id)
             }
-            console.log(data.id);
-            insertedProductId = data.id
-            setProductId(data.id)
+            catch (err) {
+                console.log("Error while inserting productdetails in product table");
+            }
 
-        }
-        catch (err) {
-            console.log("Error while inserting productdetails in product table");
+            //uploading file into storage:
+            const url = []
+            try {
+                for (const file of productImg) {
+                    const safeFileName = file.name
+                        .replace(/\s+/g, "_")       // spaces -> _
+                        .replace(/[^\w.-]/g, "");  // remove special chars except . and -
+                    let filePath = `${insertedProductId}/${crypto.randomUUID()}-${safeFileName}`
+
+                    const { data: uploadFile, error } = await supabase
+                        .storage
+                        .from('product_image')
+                        .upload(filePath, file)
+                    if (error) {
+                        console.log(error.message);
+                    } else {
+                        console.log(uploadFile);
+                    }
+
+                    //creating public url
+                    try {
+                        const { data } = supabase
+                            .storage
+                            .from('product_image')
+                            .getPublicUrl(filePath)
+                        url.push(data.publicUrl)
+                    }
+                    catch (err) {
+                        console.log("error in creating url", err);
+                    }
+                }
+                //inserting url in product table:
+                const { data, error } = await supabase
+                    .from('product_table')
+                    .update({ image: url })
+                    .eq('id', insertedProductId)
+                if (error) {
+                    console.log("error while updating", error.message);
+                    return
+                }
+                console.log(insertedProductId);
+            }
+            catch (err) {
+                console.log("error in uploading file", err);
+            }
+            console.log(url);
         }
 
-        //uploading file into storage:
-        const url = []
-        try {
+        //on edit mode
+
+        const newImgUrl = []
+        const existingImgs = editData.image || []
+        if (isEditMode) {
             for (const file of productImg) {
-                const safeFileName = file.name
+                const newSafeFileName = file.name
                     .replace(/\s+/g, "_")       // spaces -> _
                     .replace(/[^\w.-]/g, "");  // remove special chars except . and -
-                let filePath = `${insertedProductId}/${crypto.randomUUID()}-${safeFileName}`
+                const newFilePath = `${editData.id}${crypto.randomUUID()}-${newSafeFileName}`
 
                 const { data: uploadFile, error } = await supabase
                     .storage
                     .from('product_image')
-                    .upload(filePath, file)
+                    .upload(newFilePath, file)
                 if (error) {
                     console.log(error.message);
                 } else {
                     console.log(uploadFile);
                 }
 
-                //creating public url
-                try {
-                    // const { data, error } = await supabase
-                    //     .storage
-                    //     .from('product_image')
-                    //     .createSignedUrl(filePath, 60 * 60)
-
-                    // if (error) {
-                    //     console.log(error.message);
-                    //     return
-                    // }
-                    // console.log(data.signedUrl);
-                    // url.push(data.signedUrl)
-                    // Sirf ye change karo code mein
-                    const { data } = supabase
-                        .storage
-                        .from('product_image')
-                        .getPublicUrl(filePath)
-                    url.push(data.publicUrl)
-                }
-                catch (err) {
-                    console.log("error in creating url", err);
-                }
+                //generate url
+                const { data } = supabase
+                    .storage
+                    .from('product_image')
+                    .getPublicUrl(newFilePath)
+                newImgUrl.push(data.publicUrl)
             }
-            //inserting url in product table:
+
+            const mergeArray = [...existingImgs, ...newImgUrl]
+            //update new url in db
             const { data, error } = await supabase
                 .from('product_table')
-                .update({ image: url })
-                .eq('id', insertedProductId)
+                .update({ image: mergeArray })
+                .eq('id', editData.id)
             if (error) {
-                console.log("error while updating", error.message);
+                console.log("error while updating new image", error.message);
                 return
             }
-            console.log(insertedProductId);
+            console.log("new image updated");
+
+            //update all content in product table
+            await supabase
+                .from("product_table")
+                .update({
+                    title: productDetails.title,
+                    description: productDetails.description,
+                    price: productDetails.price,
+                    category: productDetails.category
+                })
+                .eq("id", editData.id)
+            resetEdit()
         }
-        catch (err) {
-            console.log("error in uploading file", err);
-        }
-        console.log(url);
     }
 
     const deletePictureFromStorage = async (index) => {
-        const imageUrl = editData.image.map(file => file.split('/product_image/')[1])
+        const imageUrl = editData.image[index] //onclick remove that image url will be stored here
+        const extractPath = imageUrl.split('/product_image/')[1]
+        console.log(imageUrl);
+        console.log(extractPath);
         try {
+            // delete from storage
             const { data, error } = await supabase
                 .storage
                 .from('product_image')
-                .remove([imageUrl])
+                .remove([extractPath])
 
             if (error) {
                 console.log(error);
@@ -150,7 +197,7 @@ function Listing() {
             console.log("image deleted in storage");
 
             //update state
-            const updateImgs = editData.image.map((url) => url !== index)
+            const updateImgs = editData.image.filter((_, path) => path !== index)
             setEditData({ ...editData, image: updateImgs })
 
             // DB update
@@ -169,7 +216,7 @@ function Listing() {
     return (
         <>
             <h1 className="font-bold text-2xl">List product now</h1>
-            <div><button onClick={() => { setFlag(!flag) }}>{!flag ? "Add" : "cross"}</button></div>
+            <div><button onClick={() => { setFlag(!flag); if (flag) { resetEdit() } }}>{!flag ? "Add" : "cross"}</button></div>
             {flag && (
                 <div>
                     <div>enter product title<input type="text" name="title" onChange={handleChange} className="border border-gray-500" /></div>
@@ -184,7 +231,7 @@ function Listing() {
                                     editData.image.map((img, index) => (
                                         <div key={index}>
                                             <img src={img} width="200px" alt="" />
-                                            <button onClick={() => { deletePictureFromStorage(index) }}>Remove</button>
+                                            <button onClick={() => deletePictureFromStorage(index)}>Remove</button>
                                         </div>
                                     ))
 
@@ -201,7 +248,7 @@ function Listing() {
                         ))
                     }</div>
                     <div>enter product category<input type="text" name="category" onChange={handleChange} className="border border-gray-500" /></div>
-                    <div><button className="bg-yellow-100" onClick={onAdd}>Add product</button></div>
+                    <div><button className="bg-yellow-100" onClick={onAdd}>{isEditMode ? "Update product " : "Add product"}</button></div>
                 </div>)
             }
 
