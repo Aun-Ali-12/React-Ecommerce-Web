@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { supabase } from "../../services/supabaseClient"
 import { useEditContext } from "../../Context/EditListing"
 
 function Listing() {
-
     const { editData, setEditData, isEditMode, resetEdit } = useEditContext() //importing from edit context
     const [flag, setFlag] = useState(false) //handles rendering of listing feature
     const [productImg, setProductImg] = useState([]) //use state which handles file(product_img) input
@@ -13,7 +12,6 @@ function Listing() {
         price: "",
         category: ''
     })
-    const [productId, setProductId] = useState() //product id
 
     //input through which we get file object
     const handleImg = (e) => {
@@ -23,6 +21,9 @@ function Listing() {
             setProductImg((prev) =>
                 [...prev, ...file]
             )
+        }
+        else {
+            setProductImg(file)
         }
     }
 
@@ -69,7 +70,6 @@ function Listing() {
                 }
                 console.log(data.id);
                 insertedProductId = data.id
-                setProductId(data.id)
             }
             catch (err) {
                 console.log("Error while inserting productdetails in product table");
@@ -107,7 +107,7 @@ function Listing() {
                     }
                 }
                 //inserting url in product table:
-                const { data, error } = await supabase
+                const { error } = await supabase
                     .from('product_table')
                     .update({ image: url })
                     .eq('id', insertedProductId)
@@ -121,71 +121,82 @@ function Listing() {
                 console.log("error in uploading file", err);
             }
             console.log(url);
+            setFlag(!flag)
+            alert("Product successfully listed.")
         }
 
         //on edit mode
 
         const newImgUrl = []
-        const existingImgs = editData.image || []
         if (isEditMode) {
-            for (const file of productImg) {
-                const newSafeFileName = file.name
-                    .replace(/\s+/g, "_")       // spaces -> _
-                    .replace(/[^\w.-]/g, "");  // remove special chars except . and -
-                const newFilePath = `${editData.id}${crypto.randomUUID()}-${newSafeFileName}`
+            const existingImgs = editData.image || []
+            try {
+                for (const file of productImg) {
+                    const newSafeFileName = file.name
+                        .replace(/\s+/g, "_")       // spaces -> _
+                        .replace(/[^\w.-]/g, "");  // remove special chars except . and -
+                    const newFilePath = `${editData.id}${crypto.randomUUID()}-${newSafeFileName}`
 
-                const { data: uploadFile, error } = await supabase
-                    .storage
-                    .from('product_image')
-                    .upload(newFilePath, file)
-                if (error) {
-                    console.log(error.message);
-                } else {
-                    console.log(uploadFile);
+                    const { data: uploadFile, error } = await supabase
+                        .storage
+                        .from('product_image')
+                        .upload(newFilePath, file)
+                    if (error) {
+                        console.log(error.message);
+                        return
+                    } else {
+                        console.log(uploadFile);
+                    }
+                    //generate url
+                    const { data } = supabase
+                        .storage
+                        .from('product_image')
+                        .getPublicUrl(newFilePath)
+                    newImgUrl.push(data.publicUrl)
                 }
-
-                //generate url
-                const { data } = supabase
-                    .storage
-                    .from('product_image')
-                    .getPublicUrl(newFilePath)
-                newImgUrl.push(data.publicUrl)
+            } catch (err) {
+                console.log(err, "error while uploading and generating new file");
             }
 
             const mergeArray = [...existingImgs, ...newImgUrl]
             //update new url in db
-            const { data, error } = await supabase
-                .from('product_table')
-                .update({ image: mergeArray })
-                .eq('id', editData.id)
-            if (error) {
-                console.log("error while updating new image", error.message);
-                return
-            }
-            console.log("new image updated");
+            try {
+                const { data, error } = await supabase
+                    .from('product_table')
+                    .update({ image: mergeArray })
+                    .eq('id', editData.id)
+                if (error) {
+                    console.log("error while updating new image", error.message);
+                    return
+                }
+                console.log("new image updated");
 
-            //update all content in product table
-            await supabase
-                .from("product_table")
-                .update({
-                    title: productDetails.title,
-                    description: productDetails.description,
-                    price: productDetails.price,
-                    category: productDetails.category
-                })
-                .eq("id", editData.id)
-            resetEdit()
+                //update all content in product table
+                await supabase
+                    .from("product_table")
+                    .update({
+                        title: productDetails.title,
+                        description: productDetails.description,
+                        price: productDetails.price,
+                        category: productDetails.category
+                    })
+                    .eq("id", editData.id)
+                resetEdit()
+                setFlag(!flag)
+                alert("Product updated successfully.")
+            }
+            catch (err) {
+                console.log("error while updating info in product table");
+            }
         }
     }
 
     const deletePictureFromStorage = async (index) => {
         const imageUrl = editData.image[index] //onclick remove that image url will be stored here
-        const extractPath = imageUrl.split('/product_image/')[1]
-        console.log(imageUrl);
-        console.log(extractPath);
+        const extractPath = imageUrl.split('/product_image/')[1] //extracting path from url to track deleted image path
         try {
             // delete from storage
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .storage
                 .from('product_image')
                 .remove([extractPath])
@@ -256,7 +267,3 @@ function Listing() {
     )
 }
 export default Listing
-
-//file input leleiya
-//remove ka option on fe
-//backend mn file upload 
