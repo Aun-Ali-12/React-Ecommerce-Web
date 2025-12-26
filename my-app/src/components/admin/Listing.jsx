@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { supabase } from "../../services/supabaseClient"
 import { useEditContext } from "../../Context/EditListing"
+import { useCategory } from "../../Context/Category"
 
 function Listing() {
     const { editData, setEditData, isEditMode, resetEdit } = useEditContext() //importing from edit context
+    const { categories } = useCategory()
     const [flag, setFlag] = useState(false) //handles rendering of listing feature
     const [productImg, setProductImg] = useState([]) //use state which handles file(product_img) input
     const [productDetails, setProductDetails] = useState(editData || {
@@ -122,7 +124,9 @@ function Listing() {
             }
             console.log(url);
             setFlag(!flag)
+            setProductImg([])
             alert("Product successfully listed.")
+
         }
 
         //on edit mode
@@ -227,7 +231,7 @@ function Listing() {
     return (
         <>
             <h1 className="font-bold text-2xl">List product now</h1>
-            <div><button onClick={() => { setFlag(!flag); if (flag) { resetEdit() } }}>{!flag ? "Add" : "cross"}</button></div>
+            <div><button onClick={() => { setFlag(!flag); if (flag) { resetEdit(); setProductImg([]) } }}>{!flag ? "Add" : "cross"}</button></div>
             {flag && (
                 <div>
                     <div>enter product title<input type="text" name="title" onChange={handleChange} className="border border-gray-500" /></div>
@@ -258,9 +262,17 @@ function Listing() {
                             </div>
                         ))
                     }</div>
-                    <div>enter product category<input type="text" name="category" onChange={handleChange} className="border border-gray-500" /></div>
+                    <div>
+                        <select name="category" onChange={handleChange}>
+                            <option disabled>select category</option>
+                            {categories && categories.map((items, index) => (
+                                <option key={index} value={items}>{items}</option>
+                            ))}
+                        </select>
+                    </div>
+                    {/* <div>enter product category<input type="text" name="category" onChange={handleChange} className="border border-gray-500" /></div> */}
                     <div><button className="bg-yellow-100" onClick={onAdd}>{isEditMode ? "Update product " : "Add product"}</button></div>
-                </div>)
+                </div >)
             }
 
         </>
