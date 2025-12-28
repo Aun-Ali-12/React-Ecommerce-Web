@@ -4,15 +4,17 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
-import Login from './pages/Login'
-import CreateAcc from './pages/Register'
-import Admin from './pages/Admin/Admin'
-import Dashboard from './components/admin/Dashboard'
-import ListedProduct from './components/admin/ListedProduct'
-import Listing from './components/admin/Listing'
-import Navbar from './components/navbar/Navbar';
+import Login from './pages/Login';
+import CreateAcc from './pages/Register';
+import Admin from './pages/Admin/Admin';
+import Dashboard from './components/admin/Dashboard';
+import ListedProduct from './components/admin/ListedProduct';
+import Listing from './components/admin/Listing';
+import Navbar from './components/Navbar/Navbar';
+import CategoryProducts from './pages/CategoryProducts'
+
 function App() {
-  console.log(supabase);
+  // console.log(supabase);
   const location = useLocation()
   return (
     <>
@@ -25,7 +27,9 @@ function App() {
         <Route path='/signup' element={<CreateAcc />} />
         <Route path='/home' element={<Home />} />
         <Route path='/products' element={<Product />} />
-        <Route path='/cart' element={<Cart />} />
+        <Route path='/category/:slug' element={<CategoryProducts />} />
+        {/* <Route path='/contact' element={<Product />} /> */}
+        {/* <Route path='/cart' element={<Cart />} /> */}
         {/* Nested Routes for Admin Dashboard  */}
         <Route path='/admin/*' element={<Admin />}>
           <Route path='dashboard' element={<Dashboard />} />
