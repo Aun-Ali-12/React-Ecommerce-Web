@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import ProductCard from "../components/ProductCard"
 import { useProducts } from "../Context/ProductData"
 
@@ -13,8 +13,10 @@ function CategoryProducts() {
     return (
         <>
             {
-                filterCategoryProducts.map((p, index) => (
-                    <ProductCard key={index} product={p} />
+                filterCategoryProducts.map((p) => (
+                    <Link key={p.id} to={`/category/${slug}/${p.id}`}>
+                        <ProductCard key={p.id} product={p} />
+                    </Link>
                 ))
             }
         </>

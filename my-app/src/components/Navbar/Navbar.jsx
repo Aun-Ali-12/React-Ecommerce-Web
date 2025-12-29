@@ -16,14 +16,14 @@ function Navbar() {
 
     return (
         <>
-            <nav>
+            <nav className="flex justify-evenly">
                 {
                     navItems.map((items, index) => {
                         if (items.type === 'dropdown') {
                             return (
-                                <div key={index} className="relative">
+                                <div key={index} className="relative group">
                                     <span>{items.label}</span>
-                                    <div key={categories.id} className="dropdown">
+                                    <div key={categories.id} className="absolute hidden group-hover:block border border-1 border-gray-500 bg-white p-2">
                                         {categories.map((cat) => (
                                             <Link key={cat.slug} to={`/category/${cat.slug}`}>{cat.category}</Link>
                                         ))}
