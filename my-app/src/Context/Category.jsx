@@ -32,7 +32,7 @@ export const CategoryProvider = ({ children }) => {
             setCategories(categoriesWithSlug)
             console.log(categoriesWithSlug);
         }
-        
+
         catch (err) {
             console.log("error while fetching product in category context", err);
         }

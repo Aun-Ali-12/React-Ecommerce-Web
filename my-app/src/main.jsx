@@ -12,9 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ProductProvider>
         <EditProvider>
           <CategoryProvider>
-            {/* <CartProvider> */}
+            <CartProvider>
               <App />
-            {/* </CartProvider> */}
+            </CartProvider>
           </CategoryProvider>
         </EditProvider>
       </ProductProvider>

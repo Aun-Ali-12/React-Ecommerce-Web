@@ -1,6 +1,7 @@
 //Handles Card UI structure
 const ProductCard = ({ product }) => {
     const { title, image, description, price } = product;
+    
     return (
         <>
             <div className="card">

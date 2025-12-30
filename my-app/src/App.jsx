@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       {location.pathname !== '/' && location.pathname !== '/signup' && location.pathname !== '/admin' && location.pathname !== '/admin/listing' && location.pathname !== '/admin/yourproduct' && location.pathname !== '/admin/dashboard' && (
-        <div>
+        <div className='sticky top-0 z-50'>
           <Navbar />
         </div>)}
       <Routes>
@@ -31,7 +31,7 @@ function App() {
         <Route path='/products/:id' element={<ProductDetail/>}></Route>
         <Route path='/category/:slug/:id' element={<ProductDetail/>}></Route>
         {/* <Route path='/contact' element={<Product />} /> */}
-        {/* <Route path='/cart' element={<Cart />} /> */}
+        <Route path='/cart' element={<Cart />} />
         {/* Nested Routes for Admin Dashboard  */}
         <Route path='/admin/*' element={<Admin />}>
           <Route path='dashboard' element={<Dashboard />} />
