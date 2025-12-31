@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../Context/CartContext"
 
 function Cart() {
     const { cart, handleRemove, updateQty } = useCart();
+    const navigate = useNavigate()
     console.log(cart);
 
 
@@ -22,6 +24,7 @@ function Cart() {
                     </div>
                 ))
             }
+            <button onClick={()=>{if(cart.length>0){navigate('/checkout')}}}>Check out</button>
         </>
     )
 }

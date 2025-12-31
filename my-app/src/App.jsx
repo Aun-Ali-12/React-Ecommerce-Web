@@ -13,6 +13,8 @@ import Listing from './components/admin/Listing';
 import Navbar from './components/Navbar/Navbar';
 import CategoryProducts from './pages/CategoryProducts'
 import ProductDetail from './pages/ProductDetail'
+import Checkout from './pages/Checkout'
+
 function App() {
   // console.log(supabase);
   const location = useLocation()
@@ -30,6 +32,7 @@ function App() {
         <Route path='/category/:slug' element={<CategoryProducts />} />
         <Route path='/products/:id' element={<ProductDetail/>}></Route>
         <Route path='/category/:slug/:id' element={<ProductDetail/>}></Route>
+        <Route path='/checkout' element={<Checkout/>}></Route>
         {/* <Route path='/contact' element={<Product />} /> */}
         <Route path='/cart' element={<Cart />} />
         {/* Nested Routes for Admin Dashboard  */}

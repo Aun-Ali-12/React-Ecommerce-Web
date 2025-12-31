@@ -37,7 +37,7 @@ export const CartProvider = ({ children }) => {
         setCart(prev => prev.filter(item => item.id !== id))
     }
 
-    //update qty and price 
+    //update qty  
     const updateQty = (id, qty) => {
         setCart(prev => prev.map(items =>
             items.id === id ? {
