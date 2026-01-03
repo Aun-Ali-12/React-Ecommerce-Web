@@ -3,7 +3,7 @@ import { useCart } from "../Context/CartContext";
 import { supabase } from "../services/supabaseClient";
 
 function CheckoutForm() {
-    const { cart } = useCart(); //useCart context
+    const { cart, setCart } = useCart(); //useCart context
     const [userDetail, setUserDetail] = useState({
         name: '',
         email: '',
@@ -54,9 +54,10 @@ function CheckoutForm() {
                 return
             }
             alert("Order placed successfully")
+            setCart([])
         }
         catch (err) {
-            alert("Error while placing order", err)
+            alert("Error while placing order in catch", err)
         }
     }
 
