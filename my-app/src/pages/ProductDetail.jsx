@@ -20,8 +20,10 @@ function ProductDetail() {
         <>
             <div>
                 <h1>{product.title}</h1>
-                {product.image.map((img) => (
-                    <img src={img} width="200px" height="200px" alt="" />
+                {product.image.map((img, index) => (
+                    <div key={index}>
+                        <img src={img} width="200px" height="200px" alt="" />
+                    </div>
                 ))
                 }
                 <p>{product.description}</p>
