@@ -12,7 +12,6 @@ function ClothApi() {
         async function fetchApi() {
             const response = await fetch('https://fakestoreapi.com/products/')
             const products = await response.json()
-            console.log(products);
             setApiData(products)
 
             //fetch product
@@ -22,7 +21,6 @@ function ClothApi() {
 
             //filter new product (and checks in both cond either db is empty or with data)
             const newProducts = await products.filter((i) => !((existingProducts || []).some(e => e.title.toLowerCase().trim() === i.title.toLowerCase().trim())))
-            console.log(newProducts);
 
             //duplicate insertion avoid:
             if (newProducts.length === 0) {
