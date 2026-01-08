@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { useCart } from "../Context/CartContext";
 import { useEffect, useMemo, useState } from "react";
 import Pagination from "../components/Pagination";
+import SearchBar from "../components/SearchBar";
 
 
 function Product() {
@@ -37,6 +38,8 @@ function Product() {
 
     return (
         <>
+
+            <SearchBar />
             <div>
                 Filter
                 <select onChange={(e) => { setSortOrder(e.target.value) }}>
