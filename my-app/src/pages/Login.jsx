@@ -36,7 +36,7 @@ function Login() {
             })
             if (error) {
                 setLoading(false)
-                alert(error)
+                alert("Processing failed, try again!")
                 return
             }
             try {

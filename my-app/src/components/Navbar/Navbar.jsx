@@ -1,41 +1,83 @@
-import React from "react"
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useCategory } from "../../Context/Category"
 
 function Navbar() {
     const { categories } = useCategory() //category context 
 
     const navItems = [
-        { path: '/home', label: 'Home' },
+        { path: '/', label: 'Home' },
         { path: '/products', label: 'Product' },
         { label: 'Category', type: 'dropdown' }, //no path bcz it is dropdown menu
-        // { path: '/newarrival', label: 'New Arrival' },
-        // { path: '/contact', label: 'Contact' },
+        { path: '/contact', label: 'Contact' },
         { path: '/cart', label: 'Cart' }
     ]
 
     return (
         <>
-            <nav className="flex justify-evenly items-center bg-white shadow-md h-16">
-                {
-                    navItems.map((items, index) => {
-                        if (items.type === 'dropdown') {
+            {/* Top Announcement Bar */}
+            <div className="bg-purple-600 text-white text-center py-2 text-sm font-medium">
+                🚚 Free shipping on orders above $25
+            </div>
+
+            {/* Navbar */}
+            <nav className="flex justify-between items-center px-10 bg-white shadow-md h-16">
+
+                {/* Logo */}
+                <div className="text-xl font-bold text-black">
+                    🛍️ ShopZar
+                </div>
+
+                {/* Nav Items */}
+                <div className="flex gap-8 items-center">
+                    {navItems.map((items, index) => {
+                        if (items.type === "dropdown") {
                             return (
-                                <div key={index} className="relative group">
-                                    <span>{items.label}</span>
-                                    <div key={index} className="absolute hidden group-hover:block border border-1 border-gray-500 bg-white p-2">
+                                <div key={index} className="relative group cursor-pointer">
+
+                                    {/* Dropdown Trigger */}
+                                    <span className="relative text-black font-medium
+                  after:absolute after:left-0 after:-bottom-1
+                  after:h-[2px] after:w-0 after:bg-black
+                  after:transition-all after:duration-300
+                  group-hover:after:w-full">
+                                        {items.label}
+                                    </span>
+
+                                    {/* Dropdown Menu */}
+                                    <div className="absolute top-8 left-0 hidden group-hover:block
+                  bg-white border border-gray-200 rounded-lg shadow-lg
+                  min-w-[180px] p-3 z-50">
                                         {categories.map((cat) => (
-                                            <Link key={cat.slug} to={`/category/${cat.slug}`}>{cat.category}</Link>
+                                            <Link
+                                                key={cat.slug}
+                                                to={`/category/${cat.slug}`}
+                                                className="block px-3 py-2 text-sm text-black rounded-md
+                      hover:bg-gray-100 transition">
+                                                {cat.category}
+                                            </Link>
                                         ))}
                                     </div>
                                 </div>
-                            )
+                            );
                         }
+
                         return (
-                            <Link key={items.label} to={items.path}>{items.label}</Link>
-                        )
-                    })
-                }
+                            <Link
+                                key={items.label}
+                                to={items.path}
+                                className="relative text-black font-medium
+                after:absolute after:left-0 after:-bottom-1
+                after:h-[2px] after:w-0 after:bg-black
+                after:transition-all after:duration-300
+                hover:after:w-full"
+                            >
+                                {items.label === "Home"}
+                                {items.label === "Contact"}
+                                {items.label}
+                            </Link>
+                        );
+                    })}
+                </div>
             </nav>
         </>
     )

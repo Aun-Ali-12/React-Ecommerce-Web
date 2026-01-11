@@ -41,6 +41,9 @@ function CheckoutForm() {
 
         //insert order detail in supabase:
         try {
+            console.log(user);
+            
+
             const { error } = await supabase
                 .from('orders')
                 .insert([order])

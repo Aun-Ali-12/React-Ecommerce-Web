@@ -15,27 +15,28 @@ import CategoryProducts from './pages/CategoryProducts'
 import ProductDetail from './pages/ProductDetail'
 import Checkout from './pages/Checkout'
 import Result from './pages/Result';
+import Contact from './pages/Contact';
 
 function App() {
   // console.log(supabase);
   const location = useLocation()
   return (
     <>
-      {location.pathname !== '/' && location.pathname !== '/signup' && location.pathname !== '/admin' && location.pathname !== '/admin/listing' && location.pathname !== '/admin/yourproduct' && location.pathname !== '/admin/dashboard' && (
+      {location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/admin' && location.pathname !== '/admin/listing' && location.pathname !== '/admin/yourproduct' && location.pathname !== '/admin/dashboard' && (
         <div className='sticky top-0 z-50'>
           <Navbar />
         </div>)}
       <Routes>
-        <Route path='/' element={<Login />} />
+        <Route path='/' element={<Home />} />
         <Route path='/signup' element={<CreateAcc />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/products' element={<Product />} />
         <Route path='/category/:slug' element={<CategoryProducts />} />
-        <Route path='/products/:id' element={<ProductDetail/>}></Route>
-        <Route path='/category/:slug/:id' element={<ProductDetail/>}></Route>
-        <Route path='/checkout' element={<Checkout/>}></Route>
-        <Route path='/search' element={<Result/>} ></Route>
-        {/* <Route path='/contact' element={<Product />} /> */}
+        <Route path='/products/:id' element={<ProductDetail />}></Route>
+        <Route path='/category/:slug/:id' element={<ProductDetail />}></Route>
+        <Route path='/checkout' element={<Checkout />}></Route>
+        <Route path='/search' element={<Result />} ></Route>
+        <Route path='/contact' element={<Contact />} />
         <Route path='/cart' element={<Cart />} />
         {/* Nested Routes for Admin Dashboard  */}
         <Route path='/admin/*' element={<Admin />}>

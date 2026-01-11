@@ -4,8 +4,7 @@ import { useCart } from "../Context/CartContext"
 function Cart() {
     const { cart, handleRemove, updateQty } = useCart();
     const navigate = useNavigate()
-    console.log(cart);
-
+    // console.log(cart);
 
     return (
         <>
@@ -24,8 +23,11 @@ function Cart() {
                     </div>
                 ))
             }
-            <button onClick={()=>{if(cart.length>0){navigate('/checkout')}}}>Check out</button>
-        </>
+            {cart.length > 0 ? (
+                <button onClick={() => { if (cart.length > 0) { navigate('/checkout') } }}>Check out</button>
+            ) :
+                "Add something in your cart."
+            } </>
     )
 }
 export default Cart
