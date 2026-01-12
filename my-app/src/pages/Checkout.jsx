@@ -4,7 +4,6 @@ function Checkout() {
     return (
         <>
             <div>
-                Checkout
                 <CheckoutForm />
             </div>
         </>

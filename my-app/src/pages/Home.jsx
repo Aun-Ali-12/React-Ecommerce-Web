@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import ProductCard from "../components/ProductCard"
 import { useProducts } from "../Context/ProductData"
+import ProductCard from "../components/ProductCard"
 
 function Home() {
     const { productsData } = useProducts();
@@ -32,8 +32,8 @@ function Home() {
     return (
         <>
             {/* electronics hero section  */}
-            <h1 className="text-center text-3xl text-[] m-10">Electronics</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+            <h1 className="text-center text-5xl font-bold m-10">Electronics</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
                 {
                     electronics && electronics.slice(0, 4).map((p, index) => (
                         <Link key={p.id} to={`/products/${p.id}`}>
@@ -44,7 +44,7 @@ function Home() {
             </div>
 
             {/* mens clothing hero section  */}
-            <h1 className="text-center text-3xl text-[] m-10">Mens Clothing</h1>
+            <h1 className="text-center text-5xl font-bold m-10">Mens Clothing</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
                 {
                     mensClothing && mensClothing.slice(0, 4).map((p, index) => (
@@ -54,7 +54,7 @@ function Home() {
             </div>
 
             {/* women clothing hero section  */}
-            <h1 className="text-center text-3xl text-[] m-10">Women clothing</h1>
+            <h1 className="text-center text-5xl font-bold m-10">Women clothing</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
                 {
                     womensClothing && womensClothing.slice(0, 4).map((p, index) => (
@@ -64,7 +64,7 @@ function Home() {
             </div>
 
             {/* electronics hero section  */}
-            <h1 className="text-center text-3xl text-[] m-10">Jewelery</h1>
+            <h1 className="text-center text-5xl font-bold m-10">Jewelery</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
                 {
                     jewelery && jewelery.slice(0, 4).map((p, index) => (

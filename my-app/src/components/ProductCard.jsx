@@ -1,6 +1,6 @@
 //Handles Card UI structure
 const ProductCard = ({ product, type }) => {
-    const { title, image, description, price } = product;
+    const { title, image, price } = product;
 
     return (
         <>
@@ -15,6 +15,7 @@ const ProductCard = ({ product, type }) => {
         transition-all duration-300 
         hover:-translate-y-1
         flex flex-col items-center text-center
+        border border-gray
       `
                         : ""
                     }
@@ -48,9 +49,8 @@ const ProductCard = ({ product, type }) => {
                 <button
                     className="
     mt-3 sm:mt-4
-    w-full
     bg-blue-600 text-white
-    py-1.5 sm:py-2
+    py-1.5 sm:py-1.5 px-3
     text-sm sm:text-base
     rounded-xl
     hover:bg-blue-700

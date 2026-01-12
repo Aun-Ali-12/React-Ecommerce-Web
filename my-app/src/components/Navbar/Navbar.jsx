@@ -15,7 +15,7 @@ function Navbar() {
     return (
         <>
             {/* Top Announcement Bar */}
-            <div className="bg-purple-600 text-white text-center py-2 text-sm font-medium">
+            <div className="bg-pink-600 text-white text-center py-2 text-md">
                 🚚 Free shipping on orders above $25
             </div>
 
@@ -23,7 +23,7 @@ function Navbar() {
             <nav className="flex justify-between items-center px-10 bg-white shadow-md h-16">
 
                 {/* Logo */}
-                <div className="text-xl font-bold text-black">
+                <div className="text-2xl font-bold text-black">
                     🛍️ ShopZar
                 </div>
 
@@ -71,8 +71,6 @@ function Navbar() {
                 after:transition-all after:duration-300
                 hover:after:w-full"
                             >
-                                {items.label === "Home"}
-                                {items.label === "Contact"}
                                 {items.label}
                             </Link>
                         );

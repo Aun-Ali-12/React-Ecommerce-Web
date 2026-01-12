@@ -16,6 +16,7 @@ import ProductDetail from './pages/ProductDetail'
 import Checkout from './pages/Checkout'
 import Result from './pages/Result';
 import Contact from './pages/Contact';
+import MobileNav from './components/Navbar/MobileNav';
 
 function App() {
   // console.log(supabase);
@@ -23,7 +24,7 @@ function App() {
   return (
     <>
       {location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/admin' && location.pathname !== '/admin/listing' && location.pathname !== '/admin/yourproduct' && location.pathname !== '/admin/dashboard' && (
-        <div className='sticky top-0 z-50'>
+        <div className='hidden sticky top-0 z-50'>
           <Navbar />
         </div>)}
       <Routes>
@@ -45,6 +46,10 @@ function App() {
           <Route path='listing' element={<Listing />} />
         </Route>
       </Routes>
+
+      <div className='bg-red-500'>
+        <MobileNav />
+      </div>
     </>
   )
 }
