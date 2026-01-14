@@ -1,5 +1,8 @@
+import { useCart } from "../Context/CartContext";
+
 //Handles Card UI structure
 const ProductCard = ({ product, type }) => {
+    const { addToCart } = useCart();
     const { title, image, price } = product;
 
     return (
@@ -38,7 +41,7 @@ const ProductCard = ({ product, type }) => {
                 </p>
                 <button
                     className={`
-                        ${type !== 'hero' ? "hidden" : ""}
+                        ${type === 'hero' ? "block" : "hidden"}
     mt-3 sm:mt-4
     bg-blue-600 text-white
     py-1.5 sm:py-1.5 px-3
@@ -49,9 +52,8 @@ const ProductCard = ({ product, type }) => {
     active:scale-95`
                     }
                 >
-                    View Product
+                    View product
                 </button>
-
             </div>
         </>
     )
