@@ -32,7 +32,7 @@ function Home() {
     return (
         <>
             {/* electronics hero section  */}
-            <h1 className="text-center text-5xl font-bold m-10">Electronics</h1>
+            <h1 className="text-center text-3xl md:text-5xl font-bold mt-20 capitalize">Electronics</h1>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
                 {
                     electronics && electronics.slice(0, 4).map((p, index) => (
@@ -44,31 +44,37 @@ function Home() {
             </div>
 
             {/* mens clothing hero section  */}
-            <h1 className="text-center text-5xl font-bold m-10">Mens Clothing</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+            <h1 className="text-center text-3xl md:text-5xl font-bold m-10 capitalize">Men's Clothing</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
                 {
                     mensClothing && mensClothing.slice(0, 4).map((p, index) => (
-                        <ProductCard key={index} product={p} type="hero" />
+                        <Link key={p.id} to={`/products/${p.id}`}>
+                            <ProductCard key={index} product={p} type="hero" />
+                        </Link>
                     ))
                 }
             </div>
 
             {/* women clothing hero section  */}
-            <h1 className="text-center text-5xl font-bold m-10">Women clothing</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+            <h1 className="text-center text-3xl md:text-5xl font-bold m-10 capitalize">Women's clothing</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
                 {
                     womensClothing && womensClothing.slice(0, 4).map((p, index) => (
-                        <ProductCard key={index} product={p} type="hero" />
+                        <Link key={p.id} to={`/products/${p.id}`}>
+                            <ProductCard key={index} product={p} type="hero" />
+                        </Link>
                     ))
                 }
             </div>
 
             {/* electronics hero section  */}
-            <h1 className="text-center text-5xl font-bold m-10">Jewelery</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+            <h1 className="text-center text-3xl md:text-5xl font-bold m-10 capitalize">Jewelery</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
                 {
                     jewelery && jewelery.slice(0, 4).map((p, index) => (
-                        <ProductCard key={index} product={p} type="hero" />
+                        <Link key={p.id} to={`/products/${p.id}`}>
+                            <ProductCard key={index} product={p} type="hero" />
+                        </Link>
                     ))
                 }
             </div>

@@ -50,18 +50,19 @@ function Product() {
 
             </div>
 
-
-            {PaginationProducts.map((p) => (
-                <div key={p.id}>
-                    <>
-                        <Link key={p.id} to={`/products/${p.id}`}>
-                            <ProductCard product={p} />
-                        </Link>
-                        <button onClick={() => { addToCart(p) }}>Add to cart</button>
-                    </>
-                </div>
-            ))
-            }
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
+                {PaginationProducts.map((p) => (
+                    <div key={p.id}>
+                        <>
+                            <Link key={p.id} to={`/products/${p.id}`}>
+                                <ProductCard product={p} />
+                                <button onClick={() => { addToCart(p) }}>Add to cart</button>
+                            </Link>
+                        </>
+                    </div>
+                ))
+                }
+            </div>
             <div>
                 <Pagination
                     currentPage={currentPage}

@@ -19,12 +19,11 @@ import Contact from './pages/Contact';
 import MobileNav from './components/Navbar/MobileNav';
 
 function App() {
-  // console.log(supabase);
   const location = useLocation()
   return (
     <>
       {location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/admin' && location.pathname !== '/admin/listing' && location.pathname !== '/admin/yourproduct' && location.pathname !== '/admin/dashboard' && (
-        <div className='hidden sticky top-0 z-50'>
+        <div className='hidden md:block sticky top-0 z-50'>
           <Navbar />
         </div>)}
       <Routes>
@@ -47,7 +46,7 @@ function App() {
         </Route>
       </Routes>
 
-      <div className='bg-red-500'>
+      <div className='block sticky top-0 z-50 md:hidden'>
         <MobileNav />
       </div>
     </>

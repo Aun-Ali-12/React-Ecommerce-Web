@@ -24,11 +24,11 @@ function Navbar() {
 
                 {/* Logo */}
                 <div className="text-2xl font-bold text-black">
-                    🛍️ ShopZar
+                    <span>🛍️ ShopZar</span>
                 </div>
 
                 {/* Nav Items */}
-                <div className="flex gap-8 items-center">
+                <div className="flex block gap-8 items-center">
                     {navItems.map((items, index) => {
                         if (items.type === "dropdown") {
                             return (

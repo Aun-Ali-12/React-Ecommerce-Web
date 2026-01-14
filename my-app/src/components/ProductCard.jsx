@@ -7,8 +7,6 @@ const ProductCard = ({ product, type }) => {
             <div
                 className={`
     group
-    ${type === "hero"
-                        ? `
         bg-white rounded-2xl 
         p-4 sm:p-5 md:p-6
         shadow-lg hover:shadow-2xl 
@@ -16,25 +14,17 @@ const ProductCard = ({ product, type }) => {
         hover:-translate-y-1
         flex flex-col items-center text-center
         border border-gray
-      `
-                        : ""
-                    }
-  `}
+      `}
             >
                 <div className="w-full flex justify-center mb-3 sm:mb-4">
                     <img
                         className={`
-      ${type === "hero"
-                                ? `
           w-[38vw] h-[22vh]
           sm:w-[30vw] sm:h-[24vh]
           md:w-[14vw] md:h-[26vh]
           object-contain
           transition-transform duration-300
           group-hover:scale-105
-        `
-                                : ""
-                            }
     `}
                         src={Array.isArray(image) ? image[0] : image}
                         alt={title}
@@ -47,7 +37,8 @@ const ProductCard = ({ product, type }) => {
                     ${price}
                 </p>
                 <button
-                    className="
+                    className={`
+                        ${type !== 'hero' ? "hidden" : ""}
     mt-3 sm:mt-4
     bg-blue-600 text-white
     py-1.5 sm:py-1.5 px-3
@@ -55,8 +46,8 @@ const ProductCard = ({ product, type }) => {
     rounded-xl
     hover:bg-blue-700
     transition-all duration-300
-    active:scale-95
-  "
+    active:scale-95`
+                    }
                 >
                     View Product
                 </button>
