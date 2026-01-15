@@ -1,4 +1,4 @@
-const Pagination = ({ currentPage, itemsPerPage, totalItems, onPageChange }) => {
+const Pagination = ({ itemsPerPage, totalItems, onPageChange }) => {
 
     const totalPages = Math.ceil(totalItems / itemsPerPage)
 
@@ -6,13 +6,13 @@ const Pagination = ({ currentPage, itemsPerPage, totalItems, onPageChange }) => 
 
     return (
         <>
-            <div className="pagination">
+            <div className="flex justify-center gap-10">
                 {
                     Array.from({ length: totalPages }).map((_, index) => {
                         const page = index + 1
 
                         return (
-                            <button key={page} onClick={() => { onPageChange(page) }}>{page}</button>
+                            <button className="bg-blue-500 px-3 py-1 rounded-md text-white focus:bg-orange-500 focus:outline-none" key={page} onClick={() => { onPageChange(page) }}>{page}</button>
                         )
                     })
                 }

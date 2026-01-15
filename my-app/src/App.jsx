@@ -1,5 +1,4 @@
 import './App.css'
-import { supabase } from './services/supabaseClient'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home';
 import Product from './pages/Product';

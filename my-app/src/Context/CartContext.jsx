@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
+import { toast } from "react-toastify";
 const CartContext = createContext()
 export const CartProvider = ({ children }) => {
 
@@ -13,6 +13,7 @@ export const CartProvider = ({ children }) => {
 
 
     const addToCart = (product) => {
+        toast.success('Added to cart')
         setCart((prev) => {
             // it will pass true only if it would have argument similar of the details cart has 
             const exists = prev.find(item => item.id === product.id)

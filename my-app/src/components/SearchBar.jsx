@@ -33,7 +33,7 @@ function SearchBar() {
         <>
             <div className="relative w-full max-w-3xl mx-auto">
                 {/* Search Input + Button */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 mt-20 md:mt-1">
                     <input
                         type="text"
                         placeholder="Search here"
@@ -49,7 +49,7 @@ function SearchBar() {
             bg-white
             border border-gray-300
             rounded-lg outline-none
-            focus:ring-2 focus:ring-blue-500
+            focus:ring-1 focus:ring-blue-500
             transition-all duration-[1s] ease-in-out
           "
                     />

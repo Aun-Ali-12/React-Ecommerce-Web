@@ -4,6 +4,9 @@ import { Link } from "react-router-dom"
 import { useEffect, useMemo, useState } from "react";
 import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import SkeletonLoader from "../components/Skeleton";
 
 
 function Product() {
@@ -39,25 +42,36 @@ function Product() {
 
             <div className="mt-10">
                 <SearchBar />
-                <div>
-                    Filter
-                    <select onChange={(e) => { setSortOrder(e.target.value) }}>
+                <div className="flex items-center gap-2">
+                    {/* Filter Icon */}
+                    <div className="flex items-center justify-center text-xl w-10 h-10 text-blue-500 mt-5 cursor-pointer">
+                        <FontAwesomeIcon icon={faFilter} />
+                    </div>
+
+                    {/* Select Dropdown */}
+                    <select
+                        onChange={(e) => setSortOrder(e.target.value)}
+                        className="border border-blue-400 onfocus:outline-none rounded-md px-3 py-2 w-[20vw] md:w-[8vw] bg-white text-black cursor-pointer mt-5"
+                    >
                         <option value="">All</option>
                         <option value="low-high">Low to high</option>
-                        <option value="high-low">high to low</option>
+                        <option value="high-low">High to low</option>
                     </select>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
-                    {PaginationProducts.map((p) => (
-                        <div key={p.id}>
-                            <>
-                                <Link key={p.id} to={`/products/${p.id}`}>
-                                    <ProductCard product={p} />
-                                </Link>
-                            </>
-                        </div>
-                    ))
+                    {sortedProducts.length === 0 ? (
+                        <SkeletonLoader count={Items_per_page} />
+                    ) : (
+                        PaginationProducts.map((p) => (
+                            <div key={p.id}>
+                                <>
+                                    <Link key={p.id} to={`/products/${p.id}`}>
+                                        <ProductCard product={p} />
+                                    </Link>
+                                </>
+                            </div>
+                        )))
                     }
                 </div>
                 <div>

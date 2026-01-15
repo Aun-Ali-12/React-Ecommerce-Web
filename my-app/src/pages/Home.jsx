@@ -33,7 +33,7 @@ function Home() {
     return (
         <>
             {/* electronics hero section  */}
-            <h1 className="text-center text-3xl md:text-5xl font-bold mt-20 capitalize">Electronics</h1>
+            <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold mt-20 md:mt-10 capitalize">Electronics</h1>
             {electronics.length === 0 ? (
                 <SkeletonLoader count={4} />
             ) : (
@@ -50,7 +50,7 @@ function Home() {
             }
 
             {/* mens clothing hero section  */}
-            <h1 className="text-center text-3xl md:text-5xl font-bold m-10 capitalize">Men's Clothing</h1>
+            <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Men's Clothing</h1>
             {electronics.length === 0 ? (
                 <SkeletonLoader count={4} />
             ) : (
@@ -67,7 +67,7 @@ function Home() {
             }
 
             {/* women clothing hero section  */}
-            <h1 className="text-center text-3xl md:text-5xl font-bold m-10 capitalize">Women's clothing</h1>
+            <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Women's clothing</h1>
             {electronics.length === 0 ? (
                 <SkeletonLoader count={4} />
             ) : (
@@ -83,7 +83,7 @@ function Home() {
             )}
 
             {/* jwelery hero section  */}
-            <h1 className="text-center text-3xl md:text-5xl font-bold m-10 capitalize">Jewelery</h1>
+            <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Jewelery</h1>
             {electronics.length === 0 ? (
                 <SkeletonLoader count={4} />
             ) : (
