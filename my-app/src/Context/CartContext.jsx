@@ -1,7 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useSession } from "./AuthContext";
 const CartContext = createContext()
 export const CartProvider = ({ children }) => {
+    const { session } = useSession();
+    const user = session?.user;
 
     //state which will have empty array if there would nothing in local storage
     const [cart, setCart] = useState(() => { return JSON.parse(localStorage.getItem("cart")) || [] })
@@ -13,6 +16,11 @@ export const CartProvider = ({ children }) => {
 
 
     const addToCart = (product) => {
+        if (!user) {
+            alert("login first")
+            return;
+        }
+
         toast.success('Added to cart')
         setCart((prev) => {
             // it will pass true only if it would have argument similar of the details cart has 

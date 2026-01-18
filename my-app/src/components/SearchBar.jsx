@@ -31,9 +31,9 @@ function SearchBar() {
 
     return (
         <>
-            <div className="relative w-full max-w-3xl mx-auto">
+            <div className="flex justify-center relative w-full">
                 {/* Search Input + Button */}
-                <div className="flex items-center gap-1 mt-20 md:mt-1">
+                <div className="flex items-center w-[85vw] md:w-[50vw] gap-1 md:mt-1">
                     <input
                         type="text"
                         placeholder="Search here"

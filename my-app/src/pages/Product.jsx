@@ -40,8 +40,10 @@ function Product() {
     return (
         <>
 
-            <div className="mt-10">
-                <SearchBar />
+            <div>
+                <div className="mt-20 md:mt-10 ">
+                    <SearchBar />
+                </div>
                 <div className="flex items-center gap-2">
                     {/* Filter Icon */}
                     <div className="flex items-center justify-center text-xl w-10 h-10 text-blue-500 mt-5 cursor-pointer">
