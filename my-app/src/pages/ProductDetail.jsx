@@ -1,14 +1,15 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useProducts } from "../Context/ProductData";
 import { useCart } from "../Context/CartContext";
 import { useState } from "react";
 
 function ProductDetail() {
     const { id } = useParams(); //gets id of clicked product
-    console.log(id);
+    // console.log(id);
     const { productsData } = useProducts();
     const { addToCart } = useCart();
     const [previewImg, setPreviewImg] = useState(null) //manages img preview
+
 
     const product = productsData.find(p => p.id === Number(id))
     // console.log(product);

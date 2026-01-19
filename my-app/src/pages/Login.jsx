@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom"
 import { supabase } from "../services/supabaseClient"
 import { useState } from "react"
+import FormImg from '../assets/FormImg.jpg'
+import { toast } from "react-toastify"
 
 function Login() {
-
     //states to handle data
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -24,65 +25,115 @@ function Login() {
 
         // checking if any input is empty then shouldn't proceed further  
         if (!email || !pass) {
-            alert("fill all the fields")
+            toast.warning("fill all the fields")
             return
         }
 
+        setLoading(true)
         try {
-            setLoading(true)
             const { error } = await supabase.auth.signInWithPassword({
                 email: email.trim(),
                 password: pass.trim(),
             })
             if (error) {
                 setLoading(false)
-                alert("Processing failed, try again!")
+                toast.error('Something went wrong, try again!')
                 return
             }
-            try {
-                const { data: { user } } = await supabase.auth.getUser()
-                let userId = user.id
-                const { data } = await supabase
-                    .from("users")
-                    .select("*")
-                    .eq("id", userId)
-                alert("Logged in successfull.")
 
-                const adminState = data[0].is_admin
-                console.log(adminState);
+            const { data: { user } } = await supabase.auth.getUser()
+            let userId = user.id
+            const { data, error: dbError } = await supabase
+                .from("users")
+                .select("is_admin")
+                .eq("id", userId)
+                .single()
 
-                if (adminState) {
-                    console.log(data);
-                    navigate("/admin")
-                } else {
-                    console.log(data);
-                    navigate("/home")
-                    setLoading(false)
-                }
+            if (dbError || !data) {
+                toast.error('Failed to fetch user')
+                return
             }
-            catch (err) {
-                console.log("Error in admin false");
-            }
-            setName("")
-            setEmail("")
-            setPass("")
-            setLoading(false)
+            toast.success('Logged in successfully', {
+                autoClose: 2000
+            })
+            navigate(data.is_admin ? '/admin' : '/')
         }
         catch (err) {
-            console.log("error in LoginUser function");
+            console.error("error in LoginUser function");
+            toast.error('Unexpected error occured')
+        }
+        finally {
+            setLoading(false)
         }
 
     }
     return (
         <>
-            <div id="reg-container">
-                <h1>Login to your account</h1>
-                <form onSubmit={LoginAcc} id="form">
-                    Enter your email: <input type="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="enter your email" disabled={loading} /><br />
-                    Enter your password: <input type="password" value={pass} onChange={(e) => { setPass(e.target.value) }} placeholder="enter your password" disabled={loading} /><br />
-                    <button disabled={loading}>{loading ? "Logging in..." : "Log in"}</button>
-                </form>
-                <p>already registered? <Link to="/signup">Signup</Link></p>
+            <div className="min-h-screen bg-white grid grid-cols-1 md:grid-cols-2 animate-fadeInUp">
+                {/* Left Side – Form */}
+                <div className="flex items-center justify-center px-6 md:px-16 border">
+                    <div className="w-full max-w-md">
+                        <h1 className="text-3xl font-bold text-blue-500 mb-6">
+                            Login to your account
+                        </h1>
+
+                        <form onSubmit={LoginAcc} className="space-y-4">
+                            <div>
+                                <label className="block text-black mb-1">
+                                    Enter your email
+                                </label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Enter your email"
+                                    disabled={loading}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-black mb-1">
+                                    Enter your password
+                                </label>
+                                <input
+                                    type="password"
+                                    value={pass}
+                                    onChange={(e) => setPass(e.target.value)}
+                                    placeholder="Enter your password"
+                                    disabled={loading}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+
+                            <button
+                                disabled={loading}
+                                className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                {loading ? "Logging in..." : "Log in"}
+                            </button>
+                        </form>
+
+                        <p className="text-black mt-4 text-sm">
+                            Already registered?{" "}
+                            <Link
+                                to="/signup"
+                                className="text-blue-500 font-medium hover:underline"
+                            >
+                                Signup
+                            </Link>
+                        </p>
+                    </div>
+                </div>
+
+                {/* Right Side – Image (Full Height) */}
+                <div className="hidden md:block h-screen">
+                    <img
+                        src={FormImg}
+                        alt="Ecommerce App"
+                        className="w-full h-full object-cover"
+                    />
+                </div>
             </div>
         </>
     )

@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useSession } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 const CartContext = createContext()
 export const CartProvider = ({ children }) => {
     const { session } = useSession();
+    const navigate = useNavigate();
     const user = session?.user;
 
     //state which will have empty array if there would nothing in local storage
@@ -17,7 +19,13 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product) => {
         if (!user) {
-            alert("login first")
+            toast.error("Session not found, First Login!", {
+                position: "bottom-center",
+                autoClose: 1000 //to autoclose notification
+            })
+            setTimeout(() => {
+                navigate("/login")
+            }, 2000);
             return;
         }
 

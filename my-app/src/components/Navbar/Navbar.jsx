@@ -1,9 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCategory } from "../../Context/Category"
+import { useSession } from "../../Context/AuthContext"
+
 
 function Navbar() {
-    const { categories } = useCategory() //category context 
-
+    const { categories } = useCategory(); //category context 
+    const { session, signOut } = useSession(); //user auth context
+    const user = session?.user
+    const navigate = useNavigate()
     const navItems = [
         { path: '/', label: 'Home' },
         { path: '/products', label: 'Product' },
@@ -76,6 +80,9 @@ function Navbar() {
                         );
                     })}
                 </div>
+
+                {/* buttons */}
+                {user ? <button onClick={()=>{signOut()}}>Logout</button> : <button onClick={() => { navigate('/login') }}>Login</button>}
             </nav>
         </>
     )
