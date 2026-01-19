@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../Context/CartContext"
 
 function Cart() {
-    const { cart, handleRemove, updateQty } = useCart();
+    const { cart, handleRemove, updateQty, genOrderNo } = useCart();
     const navigate = useNavigate()
     // console.log(cart);
 
@@ -97,7 +97,7 @@ function Cart() {
             {/* Checkout Section */}
             {cart.length > 0 ? (
                 <button
-                    onClick={() => navigate("/checkout")}
+                    onClick={() => { navigate("/checkout"); genOrderNo() }}
                     className="
           mt-6 sm:mt-8
           sm:w-auto

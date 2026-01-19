@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../Context/CartContext";
 import { supabase } from "../services/supabaseClient";
 import { toast } from "react-toastify";
 
+
 function CheckoutForm() {
-    const { cart, setCart } = useCart(); //useCart context
+    const { cart, setCart, orderNo, setOrderNo } = useCart(); //useCart context
+    const navigate = useNavigate();
     const initialUserDetails = {
         name: '',
         email: '',
         phone: '',
         address: ''
     }
+
     const [userDetail, setUserDetail] = useState(initialUserDetails)
     const total = cart.reduce((sum, item) => sum + Number(item.price) * Number(item.qty), 0)
 
@@ -39,11 +43,11 @@ function CheckoutForm() {
             items: cart,
             total_price: total,
             status: "pending",
+            order_no: orderNo
         }
 
         //insert order detail in supabase:
         try {
-            console.log(user);
             const { error } = await supabase
                 .from('orders')
                 .insert([order])
@@ -55,16 +59,14 @@ function CheckoutForm() {
             }
             toast.success('Order has been successfully placed.')
             setCart([])
+            setOrderNo([])
             setUserDetail(initialUserDetails)
+            navigate('/')
         }
         catch (err) {
             alert("Error while placing order in catch", err)
         }
     }
-
-    useEffect(() => {
-        console.log(userDetail);
-    }, [userDetail])
 
     return (
         <div className="min-h-screen bg-gray-100 py-8 px-4">
@@ -82,6 +84,7 @@ function CheckoutForm() {
                         </h2>
 
                         <div className="flex flex-col gap-4">
+                            <p>Order# {orderNo}</p>
                             {cart && cart.map((item, index) => (
                                 <div
                                     key={index}
@@ -166,7 +169,6 @@ function CheckoutForm() {
                             </button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
