@@ -9,6 +9,7 @@ import Admin from './pages/Admin/Admin';
 import Dashboard from './components/admin/Dashboard';
 import ListedProduct from './components/admin/ListedProduct';
 import Listing from './components/admin/Listing';
+import Orders from './components/admin/Orders'
 import Navbar from './components/Navbar/Navbar';
 import CategoryProducts from './pages/CategoryProducts'
 import ProductDetail from './pages/ProductDetail'
@@ -16,15 +17,20 @@ import Checkout from './pages/Checkout'
 import Result from './pages/Result';
 import Contact from './pages/Contact';
 import MobileNav from './components/Navbar/MobileNav';
+import AdminGuard from './components/admin/AdminGuard';
 
 function App() {
   const location = useLocation()
+  const excludedLoc = ['/login', 'signup', '/admin', '/admin/', '/admin/dashboard', '/admin/listing', '/admin/orders', '/admin/yourproduct']
+  const hideNav = excludedLoc.includes(location.pathname)
   return (
     <>
-      {location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/admin' && location.pathname !== '/admin/listing' && location.pathname !== '/admin/yourproduct' && location.pathname !== '/admin/dashboard' && (
+      {!hideNav && (
         <div className='hidden md:block sticky top-0 z-50'>
           <Navbar />
-        </div>)}
+        </div>
+      )
+      }
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<CreateAcc />} />
@@ -39,9 +45,14 @@ function App() {
         <Route path='/cart' element={<Cart />} />
         {/* Nested Routes for Admin Dashboard  */}
         <Route path='/admin/*' element={<Admin />}>
-          <Route path='dashboard' element={<Dashboard />} />
+          <Route path='dashboard' element={
+            <AdminGuard>
+              <Dashboard />
+            </AdminGuard>
+          } />
           <Route path='yourproduct' element={<ListedProduct />} />
           <Route path='listing' element={<Listing />} />
+          <Route path='orders' element={<Orders />} />
         </Route>
       </Routes>
 

@@ -9,25 +9,28 @@ import { EditProvider } from './Context/EditListing.jsx';
 import { CategoryProvider } from './Context/Category.jsx';
 import { CartProvider } from './Context/CartContext.jsx';
 import { UserProvider } from './Context/AuthContext.jsx';
+import { AuthCheckProvider } from './Context/AuthCheck.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <ProductProvider>
         <EditProvider>
           <CategoryProvider>
-            <UserProvider>
-              <CartProvider>
-                <App />
-                <ToastContainer
-                  position="top-right"
-                  autoClose={3000}
-                  hideProgressBar={false}
-                  closeOnClick
-                  pauseOnHover
-                  draggable
-                />
-              </CartProvider>
-            </UserProvider>
+              <UserProvider>
+                <CartProvider>
+            <AuthCheckProvider>
+                  <App />
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    closeOnClick
+                    pauseOnHover
+                    draggable
+                  />
+            </AuthCheckProvider>
+                </CartProvider>
+              </UserProvider>
           </CategoryProvider>
         </EditProvider>
       </ProductProvider>

@@ -3,9 +3,16 @@ import { useProducts } from "../Context/ProductData"
 import ProductCard from "../components/ProductCard"
 import SearchBar from "../components/SearchBar"
 import SkeletonLoader from "../components/Skeleton";
+import { useAuthCheck } from "../Context/AuthCheck"
+import { useEffect } from "react";
 
 function Home() {
     const { productsData } = useProducts();
+    const { CheckAuth } = useAuthCheck();
+
+useEffect(()=>{
+CheckAuth();
+}, [])
 
     const electronics = []
     const mensClothing = []

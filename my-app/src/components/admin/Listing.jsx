@@ -2,6 +2,7 @@ import { useState } from "react"
 import { supabase } from "../../services/supabaseClient"
 import { useEditContext } from "../../Context/EditListing"
 import { useCategory } from "../../Context/Category"
+import { toast } from "react-toastify"
 
 function Listing() {
     const { editData, setEditData, isEditMode, resetEdit } = useEditContext() //importing from edit context
@@ -187,7 +188,7 @@ function Listing() {
                     .eq("id", editData.id)
                 resetEdit()
                 setFlag(!flag)
-                alert("Product updated successfully.")
+                toast.success("Product updated successfully.")
             }
             catch (err) {
                 console.log("error while updating info in product table");
@@ -230,50 +231,143 @@ function Listing() {
 
     return (
         <>
-            <h1 className="font-bold text-2xl">List product now</h1>
-            <div><button onClick={() => { setFlag(!flag); if (flag) { resetEdit(); setProductImg([]) } }}>{!flag ? "Add" : "cross"}</button></div>
-            {flag && (
-                <div>
-                    <div>enter product title<input type="text" name="title" onChange={handleChange} className="border border-gray-500" /></div>
-                    <div>enter product description<input type="text" name="description" onChange={handleChange} className="border border-gray-500" /></div>
-                    <div>enter product price<input type="number" name="price" onChange={handleChange} className="border border-gray-500" /></div>
-                    <div>enter product image <input type="file" multiple accept="image/*" className="border border-gray-500" onChange={handleImg} /> </div>
-                    {
-                        isEditMode && editData?.image?.length > 0 && (
-                            <div>
-                                <h1>Existing Image</h1>
-                                {
-                                    editData.image.map((img, index) => (
-                                        <div key={index}>
-                                            <img src={img} width="200px" alt="" />
-                                            <button onClick={() => deletePictureFromStorage(index)}>Remove</button>
-                                        </div>
-                                    ))
+            <div className="bg-white p-6 rounded shadow-md max-w-3xl mx-auto">
+                <h1 className="font-bold text-2xl mb-4 text-black">List product now</h1>
 
-                                }
+                {/* Toggle Button */}
+                <div className="mb-4">
+                    <button
+                        onClick={() => { setFlag(!flag); if (flag) { resetEdit(); setProductImg([]) } }}
+                        className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors duration-200"
+                    >
+                        {!flag ? "Add" : "Close"}
+                    </button>
+                </div>
+
+                {flag && (
+                    <div className="space-y-4">
+                        {/* Title */}
+                        <div className="flex flex-col">
+                            <label className="text-black font-medium mb-1">Enter product title</label>
+                            <input
+                                type="text"
+                                name="title"
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded p-2"
+                            />
+                        </div>
+
+                        {/* Description */}
+                        <div className="flex flex-col">
+                            <label className="text-black font-medium mb-1">Enter product description</label>
+                            <input
+                                type="text"
+                                name="description"
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded p-2"
+                            />
+                        </div>
+
+                        {/* Price */}
+                        <div className="flex flex-col">
+                            <label className="text-black font-medium mb-1">Enter product price</label>
+                            <input
+                                type="number"
+                                name="price"
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded p-2"
+                            />
+                        </div>
+
+                        {/* Image Upload */}
+                        <div className="flex flex-col">
+                            <label className="text-black font-medium mb-1">Enter product images</label>
+                            <input
+                                type="file"
+                                multiple
+                                accept="image/*"
+                                onChange={handleImg}
+                                className="border border-gray-300 rounded p-2"
+                            />
+                        </div>
+
+                        {/* Existing Images */}
+                        {isEditMode && editData?.image?.length > 0 && (
+                            <div>
+                                <h2 className="text-black font-semibold mb-2">Existing Images</h2>
+                                <div className="flex flex-wrap gap-4">
+                                    {editData.image.map((img, index) => (
+                                        <div key={index} className="flex flex-col items-center">
+                                            <img src={img} width="150px" alt="" className="rounded" />
+                                            <button
+                                                onClick={() => deletePictureFromStorage(index)}
+                                                className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        )
-                    }
-                    <div>{
-                        productImg.map((file, index) => (
-                            <div key={index}>
-                                <img src={URL.createObjectURL(file)} alt={`preview-${index}`} width="200px" height="200px" />
-                                <button onClick={() => { onRemove(index) }}>remove</button>
+                        )}
+
+                        {/* New Image Previews */}
+                        {productImg.length > 0 && (
+                            <div>
+                                <h2 className="text-black font-semibold mb-2">New Images</h2>
+                                <div className="flex flex-wrap gap-4">
+                                    {productImg.map((file, index) => (
+                                        <div key={index} className="flex flex-col items-center">
+                                            <img
+                                                src={URL.createObjectURL(file)}
+                                                alt={`preview-${index}`}
+                                                width="150px"
+                                                height="150px"
+                                                className="rounded"
+                                            />
+                                            <button
+                                                onClick={() => onRemove(index)}
+                                                className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        ))
-                    }</div>
-                    <div>
-                        <select name="category" onChange={handleChange}>
-                            <option disabled>select category</option>
-                            {categories && categories.map((items, index) => (
-                                <option key={index} value={items}>{items}</option>
-                            ))}
-                        </select>
+                        )}
+
+                        {/* Category */}
+                        <div className="flex flex-col">
+                            <label className="text-black font-medium mb-1">Select category</label>
+                            <select
+                                name="category"
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded p-2"
+                            >
+                                <option disabled>-- Select category --</option>
+                                {categories &&
+                                    categories.map((item) => (
+                                        <option key={item.id} value={item.id}>
+                                            {item.category}
+                                        </option>
+                                    ))}
+                            </select>
+                        </div>
+
+                        {/* Add / Update Button */}
+                        <div>
+                            <button
+                                className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors duration-200"
+                                onClick={onAdd}
+                            >
+                                {isEditMode ? "Update Product" : "Add Product"}
+                            </button>
+                        </div>
                     </div>
-                    {/* <div>enter product category<input type="text" name="category" onChange={handleChange} className="border border-gray-500" /></div> */}
-                    <div><button className="bg-yellow-100" onClick={onAdd}>{isEditMode ? "Update product " : "Add product"}</button></div>
-                </div >)
-            }
+                )}
+            </div>
+
 
         </>
     )

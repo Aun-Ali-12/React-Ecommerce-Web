@@ -56,7 +56,7 @@ function Login() {
             toast.success('Logged in successfully', {
                 autoClose: 2000
             })
-            navigate(data.is_admin ? '/admin' : '/')
+            navigate(data.is_admin ? '/admin/dashboard' : '/')
         }
         catch (err) {
             console.error("error in LoginUser function");
