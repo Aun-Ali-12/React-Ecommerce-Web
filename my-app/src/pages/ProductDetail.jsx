@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useProducts } from "../Context/ProductData";
 import { useCart } from "../Context/CartContext";
 import { useState } from "react";
@@ -15,7 +15,7 @@ function ProductDetail() {
     // console.log(product);
 
     if (!product) {
-        return `<p>${"Loading..."}</p>`
+        return `${<p>"Loading..."</p>}`
     }
 
 

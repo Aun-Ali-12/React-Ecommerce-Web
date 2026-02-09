@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { supabase } from "../../services/supabaseClient"
-import { useEditContext } from "../../Context/EditListing"
-import { useCategory } from "../../Context/Category"
+import { supabase } from "../../../services/supabaseClient"
+import { useEditContext } from "../../../Context/EditListing"
+import { useCategory } from "../../../Context/Category"
 import { toast } from "react-toastify"
 
 function Listing() {

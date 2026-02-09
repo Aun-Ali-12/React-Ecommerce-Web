@@ -1,11 +1,11 @@
-import AdminNavbar from "../../components/admin/AdminNavbar";
+import AdminNavbar from "../../components/admin/components/AdminNavbar";
 import { Outlet } from "react-router-dom";
 
 function AdminPanel() {
     return (
         <div className="flex h-screen">
             {/* Sidebar */}
-            <div>
+            <div className="hidden md:block">
                 <AdminNavbar />
             </div>
 

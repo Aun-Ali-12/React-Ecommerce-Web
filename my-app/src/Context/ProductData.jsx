@@ -20,7 +20,6 @@ export const ProductProvider = ({ children }) => {
                 return
             }
             setProductData(data)
-            console.log(data);
         }
         catch (err) {
             console.log("error while fetching product in context");

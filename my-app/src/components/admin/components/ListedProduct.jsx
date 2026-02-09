@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useProducts } from "../../Context/ProductData"
-import { supabase } from "../../services/supabaseClient";
-import { useEditContext } from "../../Context/EditListing";
-import Listing from "./Listing";
+import { useProducts } from "../../../Context/ProductData"
+import { supabase } from "../../../services/supabaseClient";
+import { useEditContext } from "../../../Context/EditListing";
+import Listing from "../pages/Listing";
 
 function ListedProduct() {
     const { setEditData } = useEditContext() //edit context setting data of product in it 

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useSession } from "../../Context/AuthContext"
+import { useSession } from "../../../Context/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 

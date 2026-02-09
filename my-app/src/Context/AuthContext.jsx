@@ -15,7 +15,6 @@ export const UserProvider = ({ children }) => {
     async function getSession() {
         try {
             const { data, error } = await supabase.auth.getSession()
-            console.log(data);
             if (error) {
                 console.log("user session null");
                 setSession(null)

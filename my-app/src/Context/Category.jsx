@@ -30,7 +30,7 @@ export const CategoryProvider = ({ children }) => {
                 slug: catName.toLowerCase().replace(/\s+/g, "-")
             }))
             setCategories(categoriesWithSlug)
-            console.log(categoriesWithSlug);
+            // console.log(categoriesWithSlug);
         }
 
         catch (err) {

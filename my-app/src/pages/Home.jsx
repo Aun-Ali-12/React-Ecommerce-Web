@@ -40,7 +40,6 @@ CheckAuth();
 
     return (
         <>
-            <div className="flex flex-col items-center">
                 {/* search bar */}
                 <div className="mt-20 w-[90vw] md:mt-10 ">
                     <SearchBar />
@@ -112,7 +111,6 @@ CheckAuth();
                     </div>
                 )
                 }
-            </div>
         </>
     )
 }

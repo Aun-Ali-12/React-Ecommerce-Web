@@ -10,12 +10,11 @@ export const AuthCheckProvider = ({ children }) => {
 
     useEffect(() => {
         CheckAuth();
-        console.log(isAdmin);
     }, [])
 
-    useEffect(() => {
-        console.log(isAdmin);
-    }, [isAdmin])
+    // useEffect(() => {
+    //     // console.log(isAdmin);
+    // }, [isAdmin])
 
     async function CheckAuth() {
         try {
