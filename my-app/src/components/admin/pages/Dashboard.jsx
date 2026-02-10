@@ -1,6 +1,7 @@
-function Dashboard(){
-    return(
-        <><h1>Dashboard</h1></>
+import Analytics from "../components/Analytics"
+function Dashboard() {
+    return (
+        <><Analytics /></>
     )
 }
 export default Dashboard
