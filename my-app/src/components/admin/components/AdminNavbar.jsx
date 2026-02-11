@@ -14,7 +14,7 @@ function AdminNavbar() {
 
     return (
         <>
-            <div className="h-screen w-[25vw] bg-white flex flex-col justify-between border-r border-gray-200 p-5">
+            <div className="h-screen w-[25vw] bg-slate-900 text-white flex flex-col justify-between border-r border-gray-200 p-5">
                 <div>
                     {/* Logo Section */}
                     <div className="flex items-center">
@@ -27,7 +27,7 @@ function AdminNavbar() {
                             <Link
                                 key={nav.path}
                                 to={nav.path}
-                                className="text-black py-2 px-3 rounded hover:bg-gray-100 transition-colors duration-200"
+                                className="py-2 px-3 rounded hover:bg-gray-800 transition-colors duration-200"
                             >
                                 {nav.label}
                             </Link>
