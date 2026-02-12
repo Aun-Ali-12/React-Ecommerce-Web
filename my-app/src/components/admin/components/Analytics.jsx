@@ -23,7 +23,7 @@ function Analytics() {
 
     //Total price of order 
     let totalPrice = orders.reduce((acc, o) => {
-        return acc + (o.total_price || 0);
+        return Math.round(acc + (o.total_price || 0));
     }, 0)
 
     //pending order filter
@@ -129,7 +129,7 @@ function Analytics() {
                                 Pending Orders
                             </h2>
                             {/* progress line  */}
-                            <div className="w-full bg-amber-500 rounded-full h-5 overflow-hidden">
+                            <div className="w-full bg-gray-400 rounded-full h-5 overflow-hidden">
                                 {/* progress percent line  */}
                                 <div
                                     className="h-full bg-red-500 transition-all duration-700"
