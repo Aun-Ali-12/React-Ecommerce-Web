@@ -1,38 +1,20 @@
-import { useEffect, useState } from "react";
 import { supabase } from "../../../services/supabaseClient";
+import { useState } from "react";
 import { OrderUI } from "../components/Order";
+import { useOrderContext } from "../Context/OrderContext"
 function Orders() {
-
-    const [orders, setOrders] = useState(null)
-    const [selected, setSelected] = useState([])
+    const { setFilter, filteredOrders, setOrderStatus } = useOrderContext();
+    const [selected, setSelected] = useState([]) // state used to handle checkbox check
     const [flag, setFlag] = useState(false)
-
-    async function FetchOrders() {
-        try {
-            const { data, error } = await supabase
-                .from('orders')
-                .select('*')
-                .eq("status", "pending") //only pending status orders will be fetched
-            if (error) {
-                return
-            }
-            console.log(data);
-            setOrders(data)
-            console.log("Orders successfully fetched");
-
-        }
-        catch (err) {
-            console.log("error while fetching the orders");
-        }
-
-    }
+    
+    //for pagination
+    const [currentPage, setCurrentPage] = useState(1)
+    const [ordersPerPage, setOrdersPerPage] = useState(10)
 
     const handleCheck = (e, id) => {
-        const value = Number(e.target.value)
-        console.log(value);
         if (e.target.checked) {
             setSelected((prev) =>
-                [...prev, value]
+                [...prev, id]
             )
         } else {
             setSelected((prev) => prev.filter(x => x !== id))
@@ -52,26 +34,63 @@ function Orders() {
             }
             alert("Orders fulfilled succesfully")
             setSelected([])
-            FetchOrders();
         } catch (err) {
             console.log(err);
         }
     }
 
-
-    useEffect(() => {
-        console.log(selected);
-    }, [selected])
-
-    useEffect(() => {
-        FetchOrders();
-    }, [])
-
+    //Pagination Logic:
+    let start = (currentPage - 1) * ordersPerPage
+    let end = start + ordersPerPage
+    const Pagination = filteredOrders.slice(start, end)
 
     return (
         <>
             <div>Orders</div>
-            <div><button onClick={() => { setFlag(!flag) }}>click</button></div>
+            {/* Filters  */}
+            <div>
+
+                {/* date wise filters  */}
+                <div>
+                    <button onClick={() => { setFilter("all") }}>all</button>
+                    <button onClick={() => { setFilter("today") }}>today</button>
+                    <button onClick={() => { setFilter("month") }}>this month</button>
+                    <button onClick={() => { setFilter("last month") }}>last month</button>
+                </div>
+
+                {/* status wise filters  */}
+                <div>
+                    <button onClick={() => { setOrderStatus("all") }}>all</button>
+                    <button onClick={() => { setOrderStatus("fulfilled") }}>fulfilled</button>
+                    <button onClick={() => { setOrderStatus("pending") }}>Unfulfilled</button>
+                </div>
+
+                {/* pagination  */}
+                <div>
+                    <select value={ordersPerPage}
+                        onChange={(e) => {
+                            setOrdersPerPage(Number(e.target.value))
+                            setCurrentPage(1)
+                        }}
+                    >
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
+                        <option value={filteredOrders.length}>all</option>
+                    </select>
+                </div>
+            </div>
+
+            {/* fulfillment process initiates from this button  */}
+            <div>
+                <button onClick={() => {
+                    if (selected.length == 0) {
+                        alert("First select any order")
+                        return
+                    } else {
+                        setFlag(!flag)
+                    }
+                }}>click</button></div>
             {
                 flag && (
                     <div><button onClick={handlefulFill}>fulfill</button></div>
@@ -84,7 +103,7 @@ function Orders() {
                             <td>
                                 <input type="checkbox" onChange={(e) => {
                                     if (e.target.checked) {
-                                        setSelected(orders.map(o => o.id))
+                                        setSelected(filteredOrders.map(o => o.id))
                                     } else {
                                         setSelected([])
                                     }
@@ -101,14 +120,20 @@ function Orders() {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders?.map((order) => (
-                            < OrderUI key={order.id} orders={order} selected={selected} handleCheck={handleCheck} />
-                        )
-                        )
+                        {Pagination.length == 0 ? <p>No data matched</p> :
+                            Pagination?.map((order) => (
+                                < OrderUI key={order.id} orders={order} selected={selected} handleCheck={handleCheck} />
+                            )
+                            )
                         }
                     </tbody>
                 </table>
             </div>
+
+            {/* showing calculated length of orders using pagination data  */}
+            <div>Showing {Pagination.length}orders</div>
+            <button disabled={currentPage === 1} onClick={() => { setCurrentPage(prev => prev - 1) }}>Prev</button>
+            <button disabled={end >= filteredOrders.length} onClick={() => { setCurrentPage(prev => prev + 1) }}>Next</button>
         </>
     )
 }

@@ -6,8 +6,8 @@ export const OrderUI = ({ orders, selected, handleCheck }) => {
                 <tr className="border-b hover:bg-gray-50 text-sm hover:cursor-pointer">
                     <td>
                         <input type="checkbox"
-                            onChange={(e) => { handleCheck(e, orders.id) }}
                             value={orders.id}
+                            onChange={(e) => { handleCheck(e, orders.id) }}
                             checked={selected.includes(orders.id)} />
                     </td>
                     <td className="p-3">{order_no}</td>
