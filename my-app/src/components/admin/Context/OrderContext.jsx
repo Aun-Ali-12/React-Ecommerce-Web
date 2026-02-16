@@ -7,7 +7,7 @@ export const OrderProvider = ({ children }) => {
     const [filter, setFilter] = useState("")
     const [orderStatus, setOrderStatus] = useState("")
 
-    
+
     //Fetch order function
     async function FetchOrders() {
         try {
@@ -43,7 +43,7 @@ export const OrderProvider = ({ children }) => {
             dateMatch = d.toDateString() === now.toDateString()
         }
 
-        if (filter === "month") {
+        if (filter === "this month") {
             dateMatch = d.getMonth() === now.getMonth() &&
                 d.getFullYear() === now.getFullYear() //both month and year have to be checked
         }
@@ -72,8 +72,6 @@ export const OrderProvider = ({ children }) => {
         console.log(filter, "filter");
         console.log(filteredOrders);
         console.log(orders);
-
-
     }, [filter])
     return (
         <>
