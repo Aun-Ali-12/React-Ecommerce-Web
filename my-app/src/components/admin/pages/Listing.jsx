@@ -3,6 +3,7 @@ import { supabase } from "../../../services/supabaseClient"
 import { useEditContext } from "../../../Context/EditListing"
 import { useCategory } from "../../../Context/Category"
 import { toast } from "react-toastify"
+import Swal from "sweetalert2";
 
 function Listing() {
     const { editData, setEditData, isEditMode, resetEdit } = useEditContext() //importing from edit context
@@ -49,10 +50,10 @@ function Listing() {
         const { data: { user } } = await supabase.auth.getUser()
         let admin = user.id //user id
         let insertedProductId;
-        // if (!productDetails.title || !productDetails.description || !productDetails.price || !productDetails.category) {
-        //     alert("enter all fields")
-        //     return
-        // }
+        if (!productDetails.title || !productDetails.description || !productDetails.price || !productDetails.category) {
+            alert("enter all fields")
+            return
+        }
         //inserting product details in product table
         if (!isEditMode) {
             try {
@@ -126,8 +127,12 @@ function Listing() {
             console.log(url);
             setFlag(!flag)
             setProductImg([])
-            alert("Product successfully listed.")
-
+            Swal.fire({
+                title: "Success",
+                text: "Order added successfully",
+                icon: "success",
+                confirmButtonText: "OK",
+            });
         }
 
         //on edit mode

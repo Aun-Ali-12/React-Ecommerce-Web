@@ -64,17 +64,18 @@ function ListedProduct() {
                                         console.log(d);
                                         setEditClicked(!editClicked);
                                     }}
-                                    className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors duration-200"
+                                    className="relative px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors duration-200"
                                 >
-                                    Edit
+                                    {editClicked ? "Close" : "Edit"}
                                 </button>
                             </div>
                         </div>
                     </div>
                 ))}
-
                 {/* Edit Component */}
-                {editClicked && <Listing />}
+                <div className="absolute z-50">
+                    {editClicked && <Listing />}
+                </div>
             </div>
 
         </>
