@@ -24,11 +24,10 @@ function CategoryProducts() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
                     {
                         filterCategoryProducts.map((p) => (
-                            <div>
+                            <div key={p.id}>
                                 <Link key={p.id} to={`/category/${slug}/${p.id}`}>
                                     <ProductCard key={p.id} product={p} />
                                 </Link>
-                                {/* <button onClick={() => { addToCart(p) }}>Add to Cart</button> */}
                             </div>
                         ))
                     }

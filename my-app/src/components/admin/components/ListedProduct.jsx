@@ -5,9 +5,8 @@ import { useEditContext } from "../../../Context/EditListing";
 import Listing from "../pages/Listing";
 
 function ListedProduct() {
-    const { setEditData } = useEditContext() //edit context setting data of product in it 
+    const { setEditData, editClicked, setEditClicked } = useEditContext() //edit context setting data of product in it 
     const { productsData } = useProducts()
-    const [editClicked, setEditClicked] = useState(false)
 
     const handleDel = async (productId) => {
         // console.log(id);
@@ -73,8 +72,8 @@ function ListedProduct() {
                     </div>
                 ))}
                 {/* Edit Component */}
-                <div className="absolute z-50">
-                    {editClicked && <Listing />}
+                <div className="absolute top-50 bottom-50 right-0 left-0 z-50 w-full">
+                    {editClicked && <Listing type="EditPage" />}
                 </div>
             </div>
 

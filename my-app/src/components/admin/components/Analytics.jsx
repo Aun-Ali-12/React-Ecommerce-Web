@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, Bar, BarChart, ResponsiveContainer, CartesianGrid,
 import { useOrderContext } from "../Context/OrderContext";
 
 function Analytics() {
-    const { filter, setFilter, filteredOrders } = useOrderContext();
+    const { orders, filter, setFilter, filteredOrders } = useOrderContext();
     const [dFlag, setdFlag] = useState(false)
 
     //Total price of order 
@@ -35,7 +35,7 @@ function Analytics() {
     const pendingPercent = totalOrders === 0 ? 0 : Math.round((pendingOrders / totalOrders) * 100)
 
     //First 3 current dates wise order qty 
-    let firstWeekDates = Object.values(filteredOrders.reduce((acc, o) => {
+    let firstWeekDates = Object.values(orders.reduce((acc, o) => {
         const orderDate = o.created_at.split('T')[0]
         if (!acc[orderDate]) acc[orderDate] = { date: orderDate, ordersQty: 0 }
         acc[orderDate].ordersQty += 1
@@ -89,7 +89,7 @@ function Analytics() {
                                             <button
                                                 onClick={() => { setFilter("this month"); setdFlag(!dFlag) }}
                                                 className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition
-      ${filter === "month"
+      ${filter === "this month"
                                                         ? "bg-blue-600 text-white"
                                                         : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                                                     }`}

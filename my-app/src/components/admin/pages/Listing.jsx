@@ -5,10 +5,10 @@ import { useCategory } from "../../../Context/Category"
 import { toast } from "react-toastify"
 import Swal from "sweetalert2";
 
-function Listing() {
-    const { editData, setEditData, isEditMode, resetEdit } = useEditContext() //importing from edit context
+function Listing({ type }) {
+    const { editData, setEditData, isEditMode, resetEdit, editClicked, setEditClicked } = useEditContext() //importing from edit context
     const { categories } = useCategory()
-    const [flag, setFlag] = useState(false) //handles rendering of listing feature
+    const [flag, setFlag] = useState(false) //handles rendering of listing component
     const [productImg, setProductImg] = useState([]) //use state which handles file(product_img) input
     const [productDetails, setProductDetails] = useState(editData || {
         title: '',
@@ -193,6 +193,7 @@ function Listing() {
                     .eq("id", editData.id)
                 resetEdit()
                 setFlag(!flag)
+                setEditClicked(!editClicked)
                 toast.success("Product updated successfully.")
             }
             catch (err) {
@@ -237,8 +238,10 @@ function Listing() {
     return (
         <>
             <div className="bg-white p-6 rounded shadow-md max-w-3xl mx-auto">
-                <h1 className="font-bold text-2xl mb-4 text-black">List product now</h1>
-
+                <div className="flex items-center justify-between">
+                    <h1 className="font-bold text-2xl mb-4 text-black">List product now</h1>
+                    <button onClick={() => { setEditClicked(!editClicked) }} className={`${type !== "EditPage" ? "hidden" : "block"} px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors duration-200`}>Close</button>
+                </div>
                 {/* Toggle Button */}
                 <div className="mb-4">
                     <button

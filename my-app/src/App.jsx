@@ -55,9 +55,24 @@ function App() {
               <Dashboard />
             </AdminGuard>
           } />
-          <Route path='yourproduct' element={<ListedProduct />} />
-          <Route path='listing' element={<Listing />} />
-          <Route path='orders' element={<Orders />} />
+          <Route path='yourproduct' element={
+            // Auth Check
+            <AdminGuard>
+              <ListedProduct />
+            </AdminGuard>
+          } />
+          <Route path='listing' element={
+            // Auth Check
+            <AdminGuard>
+              <Listing />
+            </AdminGuard>
+          } />
+          <Route path='orders' element={
+            // Auth Check
+            <AdminGuard>
+              <Orders />
+            </AdminGuard>
+          } />
         </Route>
       </Routes>
 
@@ -68,8 +83,6 @@ function App() {
         </div>
       )
       }
-
-
     </>
   )
 }

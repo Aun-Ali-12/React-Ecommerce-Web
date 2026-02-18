@@ -4,6 +4,7 @@ import { useState } from "react";
 function MobileNav() {
     const { categories } = useCategory();
     const [flag, setFlag] = useState(false);
+    const [nestedFlag, setNestedFlag] = useState(false)
 
     //links
     const navItems = [
@@ -20,32 +21,40 @@ function MobileNav() {
 
                 {/* Top Bar */}
                 <div className="flex justify-between items-center h-16 px-4 text-2xl font-bold">
-                    <span>🛍️ ShopZar</span>
-                    <span onClick={() => { setFlag(!flag) }}>{!flag ? "☰" : "Close"}</span>
+                    <span className="text-lg cursor-pointer">🛍️ ShopZar</span>
+                    <span onClick={() => { setFlag(!flag) }} className="text-sm cursor-pointer">{!flag ? "☰" : "Close"}</span>
                 </div>
 
                 {/* Drawer */}
                 {
                     flag && (
-                        <div className="fixed top-16 left-0 bg-pink-100 w-[75vw] h-screen p-4">
+                        <div className="flex flex-col items-start gap-5 fixed top-16 left-0 bg-slate-100 text-slate-900 w-[75vw] h-screen p-4">
                             {navItems.map((items) => {
                                 if (items.type === 'dropdown') {
                                     return (
-                                        <div key={items.label} className="mb-4">
-                                            <span className="block text-black font-medium">
+                                        <div key={items.label} onClick={() => { setNestedFlag(!nestedFlag) }} className="relative mb-4">
+                                            <span className="relative text-black font-medium
+                after:absolute after:left-0 after:-bottom-1
+                after:h-[2px] after:w-0 after:bg-black
+                after:transition-all after:duration-300
+                hover:after:w-full cursor-pointer">
                                                 {items.label}
                                             </span>
-                                            <div className="mt-2 pl-2">
-                                                {categories.map((cat) => (
-                                                    <Link
-                                                        key={cat.slug}
-                                                        to={`/category/${cat.slug}`}
-                                                        onClick={() => { setFlag(!flag) }}
-                                                        className="block py-2 text-sm text-black">
-                                                        {cat.category}
-                                                    </Link>
-                                                ))}
-                                            </div>
+                                            {
+                                                nestedFlag && (
+                                                    <div className="absolute z-50 ml-2 p-2 capitalize bg-white rounded-md shadow-sm">
+                                                        {categories.map((cat) => (
+                                                            <Link
+                                                                key={cat.slug}
+                                                                to={`/category/${cat.slug}`}
+                                                                onClick={() => { setFlag(!flag) }}
+                                                                className="block px-4 py-2 text-sm text-black hover:bg-slate-100 hover:rounded-md">
+                                                                {cat.category}
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                )
+                                            }
                                         </div>
                                     )
                                 }
@@ -54,7 +63,11 @@ function MobileNav() {
                                         key={items.label}
                                         to={items.path}
                                         onClick={() => { setFlag(!flag) }}
-                                        className="block py-3 text-black font-medium"
+                                        className="relative text-black font-medium
+                after:absolute after:left-0 after:-bottom-1
+                after:h-[2px] after:w-0 after:bg-black
+                after:transition-all after:duration-300
+                hover:after:w-full"
                                     >
                                         {items.label}
                                     </Link>
