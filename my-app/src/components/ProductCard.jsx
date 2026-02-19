@@ -1,5 +1,3 @@
-import { useCart } from "../Context/CartContext";
-
 //Handles Card UI structure
 const ProductCard = ({ product, type }) => {
     const { title, image, price } = product;

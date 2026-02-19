@@ -4,10 +4,9 @@ import { useCart } from "../Context/CartContext"
 function Cart() {
     const { cart, handleRemove, updateQty, genOrderNo } = useCart();
     const navigate = useNavigate()
-    // console.log(cart);
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center py-6 sm:py-10">
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center py-6 sm:py-10 mt-10">
             <h1 className="text-xl sm:text-2xl font-semibold text-blue-800 mb-4 sm:mb-6">
                 Your Cart
             </h1>

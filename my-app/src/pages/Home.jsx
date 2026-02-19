@@ -7,12 +7,12 @@ import { useAuthCheck } from "../Context/AuthCheck"
 import { useEffect } from "react";
 
 function Home() {
-    const { productsData } = useProducts();
+    const { productsData, loading } = useProducts();
     const { CheckAuth } = useAuthCheck();
 
-useEffect(()=>{
-CheckAuth();
-}, [])
+    useEffect(() => {
+        CheckAuth();
+    }, [])
 
     const electronics = []
     const mensClothing = []
@@ -40,77 +40,77 @@ CheckAuth();
 
     return (
         <>
-                {/* search bar */}
-                <div className="mt-20 w-[90vw] md:mt-10 ">
-                    <SearchBar />
-                </div>
+            {/* search bar */}
+            <div className="mt-20 w-[90vw] md:mt-10 ">
+                <SearchBar />
+            </div>
 
-                {/* electronics hero section  */}
-                <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold mt-10 md:mt-10 capitalize">Electronics</h1>
-                {electronics.length === 0 ? (
+            {/* electronics hero section  */}
+            <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold mt-10 md:mt-10 capitalize">Electronics</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
+                {loading ? (
                     <SkeletonLoader count={4} />
+                ) : electronics.length === 0 ? (
+                    <p>No Product Found</p>
+                ) :
+                    (electronics && electronics.slice(0, 4).map((p, index) => (
+                        <Link key={p.id} to={`/products/${p.id}`}>
+                            <ProductCard key={index} product={p} type="hero" />
+                        </Link>
+                    ))
+                    )
+                }
+            </div>
+
+            {/* mens clothing hero section  */}
+            <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Men's Clothing</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
+                {loading ? (
+                    <SkeletonLoader count={4} />
+                ) : mensClothing.length === 0 ? (
+                    <p>No Product Found</p>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
-                        {
-                            electronics && electronics.slice(0, 4).map((p, index) => (
-                                <Link key={p.id} to={`/products/${p.id}`}>
-                                    <ProductCard key={index} product={p} type="hero" />
-                                </Link>
-                            ))
-                        }
-                    </div>
+                    mensClothing && mensClothing.slice(0, 4).map((p, index) => (
+                        <Link key={p.id} to={`/products/${p.id}`}>
+                            <ProductCard key={index} product={p} type="hero" />
+                        </Link>
+                    ))
                 )
                 }
+            </div>
 
-                {/* mens clothing hero section  */}
-                <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Men's Clothing</h1>
-                {electronics.length === 0 ? (
+            {/* women clothing hero section  */}
+            <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Women's clothing</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
+                {loading ? (
                     <SkeletonLoader count={4} />
+                ) : womensClothing.length === 0 ? (
+                    <p>No Product Found</p>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
-                        {
-                            mensClothing && mensClothing.slice(0, 4).map((p, index) => (
-                                <Link key={p.id} to={`/products/${p.id}`}>
-                                    <ProductCard key={index} product={p} type="hero" />
-                                </Link>
-                            ))
-                        }
-                    </div>
-                )
-                }
-
-                {/* women clothing hero section  */}
-                <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Women's clothing</h1>
-                {electronics.length === 0 ? (
-                    <SkeletonLoader count={4} />
-                ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
-                        {
-                            womensClothing && womensClothing.slice(0, 4).map((p, index) => (
-                                <Link key={p.id} to={`/products/${p.id}`}>
-                                    <ProductCard key={index} product={p} type="hero" />
-                                </Link>
-                            ))
-                        }
-                    </div>
+                    womensClothing && womensClothing.slice(0, 4).map((p, index) => (
+                        <Link key={p.id} to={`/products/${p.id}`}>
+                            <ProductCard key={index} product={p} type="hero" />
+                        </Link>
+                    ))
                 )}
+            </div>
 
-                {/* jwelery hero section  */}
-                <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Jewelery</h1>
-                {electronics.length === 0 ? (
+            {/* jwelery hero section  */}
+            <h1 className="text-center text-blue-800 text-3xl md:text-5xl font-bold m-10 capitalize">Jewelery</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
+                {loading ? (
                     <SkeletonLoader count={4} />
+                ) : jewelery.length === 0 ? (
+                    <p>No Product Found</p>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-3 lg:grid-cols-4">
-                        {
-                            jewelery && jewelery.slice(0, 4).map((p, index) => (
-                                <Link key={p.id} to={`/products/${p.id}`}>
-                                    <ProductCard key={index} product={p} type="hero" />
-                                </Link>
-                            ))
-                        }
-                    </div>
+                    jewelery && jewelery.slice(0, 4).map((p, index) => (
+                        <Link key={p.id} to={`/products/${p.id}`}>
+                            <ProductCard key={index} product={p} type="hero" />
+                        </Link>
+                    ))
                 )
                 }
+            </div>
         </>
     )
 }

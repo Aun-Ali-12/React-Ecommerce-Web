@@ -56,13 +56,13 @@ function Orders() {
 
                     {/* date wise filters  */}
                     <div className="relative">
-                        <button onClick={() => { setdFlag(!dFlag) }} className="capitalize">{dFlag ? "X" : "Select by date"}</button>
+                        <button onClick={() => { setdFlag(!dFlag) }} className="capitalize">{dFlag ? "X" : `${filter || "Select by date"}`}</button>
                         {dFlag && (
                             <div className=" absolute bg-white shadow-md rounded-xl p-3 w-56 border">
                                 <div className="flex flex-col gap-1">
 
                                     <button
-                                        onClick={() => setFilter("all")}
+                                        onClick={() => { setFilter("all"); setdFlag(!dFlag) }}
                                         className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition
       ${filter === "all"
                                                 ? "bg-blue-600 text-white"
@@ -73,7 +73,7 @@ function Orders() {
                                     </button>
 
                                     <button
-                                        onClick={() => setFilter("today")}
+                                        onClick={() => { setFilter("today"); setdFlag(!dFlag) }}
                                         className={`text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition
       ${filter === "today"
                                                 ? "bg-blue-600 text-white"
@@ -84,9 +84,9 @@ function Orders() {
                                     </button>
 
                                     <button
-                                        onClick={() => setFilter("month")}
+                                        onClick={() => { setFilter("month"); setdFlag(!dFlag) }}
                                         className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition
-      ${filter === "month"
+      ${filter === "this month"
                                                 ? "bg-blue-600 text-white"
                                                 : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                                             }`}
@@ -95,7 +95,7 @@ function Orders() {
                                     </button>
 
                                     <button
-                                        onClick={() => setFilter("last month")}
+                                        onClick={() => { setFilter("last month"); setdFlag(!dFlag) }}
                                         className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition
       ${filter === "last month"
                                                 ? "bg-blue-600 text-white"
@@ -148,10 +148,10 @@ function Orders() {
                 </div>
 
 
-                <div className="flex gap-5">
+                <div className="flex flex-wrap items-center gap-5">
 
                     {/* status wise filters  */}
-                    <div className="flex gap-5">
+                    <div className="flex items-center gap-4 m-2">
                         <button onClick={() => { setOrderStatus("all") }} className="bg-white shadow-md rounded-md px-5 py-1 capitalize">all</button>
                         <button onClick={() => { setOrderStatus("fulfilled") }} className="bg-white shadow-md rounded-md px-5 py-1 capitalize">fulfilled</button>
                         <button onClick={() => { setOrderStatus("pending") }} className="bg-white shadow-md rounded-md px-5 py-1 capitalize">Unfulfilled</button>
@@ -198,7 +198,7 @@ function Orders() {
                             </tr>
                         </thead>
                         <tbody>
-                            {Pagination.length == 0 ? <p>No data matched</p> :
+                            {Pagination.length == 0 ? <tr><td>No data matched</td></tr> :
                                 Pagination?.map((order) => (
                                     < OrderUI key={order.id} orders={order} selected={selected} handleCheck={handleCheck} />
                                 )
