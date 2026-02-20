@@ -37,6 +37,7 @@ export const UserProvider = ({ children }) => {
             }
             toast.success("Logging out.")
             navigate('/')
+            window.location.reload()
         }
         catch (err) {
             console.log("User loggedout");

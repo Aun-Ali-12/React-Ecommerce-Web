@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { useProducts } from "../../../Context/ProductData"
 import { supabase } from "../../../services/supabaseClient";
 import { useEditContext } from "../../../Context/EditListing";
 import Listing from "../pages/Listing";
+import Swal from "sweetalert2";
 
 function ListedProduct() {
     const { setEditData, editClicked, setEditClicked } = useEditContext() //edit context setting data of product in it 
@@ -21,11 +21,16 @@ function ListedProduct() {
                 console.log("something is not okay while deleting");
                 return
             }
-            console.log("deleted");
+            Swal.fire({
+                title: "Success",
+                text: "Image deleted successfully",
+                icon: "success",
+                confirmButtonText: "OK",
+            });
+            window.location.reload()
         }
         catch (err) {
             console.log("error while deleting product", err);
-
         }
     }
 

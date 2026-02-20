@@ -16,6 +16,7 @@ function Listing({ type }) {
         price: "",
         category: ''
     })
+    const [loading, setLoading] = useState(false)
 
     //input through which we get file object
     const handleImg = (e) => {
@@ -50,12 +51,14 @@ function Listing({ type }) {
         const { data: { user } } = await supabase.auth.getUser()
         let admin = user.id //user id
         let insertedProductId;
-        if (!productDetails.title || !productDetails.description || !productDetails.price || !productDetails.category) {
-            alert("enter all fields")
+        if (!productDetails.title?.trim() || !productDetails.description?.trim() || productDetails.price == null || productDetails.price === '' || !productDetails.category?.trim()) {
+            toast.error("Enter all the given fields")
             return
         }
+
         //inserting product details in product table
         if (!isEditMode) {
+            setLoading(true)
             try {
                 const { data, error } = await supabase
                     .from('product_table')
@@ -70,6 +73,7 @@ function Listing({ type }) {
                     .single()
                 if (error) {
                     console.log("product not inserted", error.message);
+                    setLoading(false)
                     return
                 }
                 console.log(data.id);
@@ -77,6 +81,7 @@ function Listing({ type }) {
             }
             catch (err) {
                 console.log("Error while inserting productdetails in product table");
+                setLoading(false)
             }
 
             //uploading file into storage:
@@ -94,6 +99,8 @@ function Listing({ type }) {
                         .upload(filePath, file)
                     if (error) {
                         console.log(error.message);
+                        setLoading(false)
+                        return
                     } else {
                         console.log(uploadFile);
                     }
@@ -108,6 +115,7 @@ function Listing({ type }) {
                     }
                     catch (err) {
                         console.log("error in creating url", err);
+                        setLoading(false)
                     }
                 }
                 //inserting url in product table:
@@ -117,16 +125,19 @@ function Listing({ type }) {
                     .eq('id', insertedProductId)
                 if (error) {
                     console.log("error while updating", error.message);
+                    setLoading(false)
                     return
                 }
                 console.log(insertedProductId);
             }
             catch (err) {
                 console.log("error in uploading file", err);
+                setLoading(false)
             }
             console.log(url);
             setFlag(!flag)
             setProductImg([])
+            setLoading(false)
             Swal.fire({
                 title: "Success",
                 text: "Order added successfully",
@@ -195,6 +206,7 @@ function Listing({ type }) {
                 setFlag(!flag)
                 setEditClicked(!editClicked)
                 toast.success("Product updated successfully.")
+                console.log(editData);
             }
             catch (err) {
                 console.log("error while updating info in product table");
@@ -260,6 +272,7 @@ function Listing({ type }) {
                             <input
                                 type="text"
                                 name="title"
+                                value={isEditMode ? productDetails.title : productDetails.title}
                                 onChange={handleChange}
                                 className="border border-gray-300 rounded p-2"
                             />
@@ -271,6 +284,7 @@ function Listing({ type }) {
                             <input
                                 type="text"
                                 name="description"
+                                // value={productDetails.description || editData.description}
                                 onChange={handleChange}
                                 className="border border-gray-300 rounded p-2"
                             />
@@ -282,6 +296,7 @@ function Listing({ type }) {
                             <input
                                 type="number"
                                 name="price"
+                                // value={productDetails.price || editData.price}
                                 onChange={handleChange}
                                 className="border border-gray-300 rounded p-2"
                             />
@@ -366,8 +381,9 @@ function Listing({ type }) {
                         {/* Add / Update Button */}
                         <div>
                             <button
-                                className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors duration-200"
+                                className={`${loading ? "bg-blue-100 px-4 py-2 text-white font-semibold rounded" : ""}px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors duration-200`}
                                 onClick={onAdd}
+                                disabled={loading}
                             >
                                 {isEditMode ? "Update Product" : "Add Product"}
                             </button>
