@@ -7,7 +7,7 @@ function Footer() {
 
                     {/* Brand Section */}
                     <div>
-                        <h2 className="text-2xl font-bold mb-4">YourStore</h2>
+                        <h2 className="text-2xl font-bold mb-4">ShopZar</h2>
                         <p className="text-sm text-gray-300">
                             Premium quality products with secure checkout and fast delivery.
                             Shop smart. Shop better.
@@ -18,10 +18,9 @@ function Footer() {
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
                         <ul className="space-y-2 text-sm text-gray-300">
-                            <li className="hover:text-yellow-400 cursor-pointer transition">Home</li>
-                            <li className="hover:text-yellow-400 cursor-pointer transition">Products</li>
-                            <li className="hover:text-yellow-400 cursor-pointer transition">Categories</li>
-                            <li className="hover:text-yellow-400 cursor-pointer transition">Contact</li>
+                            <li className="hover:text-yellow-400 cursor-pointer transition"><a href="/">Home</a></li>
+                            <li className="hover:text-yellow-400 cursor-pointer transition"><a href="/products">Products</a></li>
+                            <li className="hover:text-yellow-400 cursor-pointer transition"><a href="/contact">Contact</a></li>
                         </ul>
                     </div>
 
