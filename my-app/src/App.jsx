@@ -18,6 +18,8 @@ import Result from './pages/Result';
 import Contact from './pages/Contact';
 import MobileNav from './components/Navbar/MobileNav';
 import AdminGuard from './components/admin/AdminGuard';
+import Footer from './components/Footer.jsx'
+
 
 function App() {
   const location = useLocation()
@@ -83,6 +85,8 @@ function App() {
         </div>
       )
       }
+
+      <Footer />
     </>
   )
 }

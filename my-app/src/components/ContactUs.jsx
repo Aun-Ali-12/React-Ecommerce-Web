@@ -1,7 +1,9 @@
-function ContactUs(){
-    return(
+function ContactUs() {
+    return (
         <>
-        <h1>Contact Policy</h1>
+            <div className="h-screen flex items-center justify-center">
+                <h1 className="text-4xl text-blue-800 font-bold">Contact Policy</h1>
+            </div>
         </>
     )
 }
