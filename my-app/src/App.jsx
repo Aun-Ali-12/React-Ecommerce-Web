@@ -86,7 +86,13 @@ function App() {
       )
       }
 
-      <Footer />
+      {
+        !hideNav && (
+          <div>
+            <Footer />
+          </div>
+        )
+      }
     </>
   )
 }
