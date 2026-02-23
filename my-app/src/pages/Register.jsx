@@ -117,7 +117,7 @@ function CreateAcc() {
                 <div className="flex items-center justify-center px-6 md:px-16 border">
                     <div className="w-full max-w-md">
                         <h1 className="text-3xl font-bold text-blue-500 mb-6">
-                            Login to your account
+                            Create your account
                         </h1>
 
                         <form onSubmit={RegisterUser} className="space-y-4">
